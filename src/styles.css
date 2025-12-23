@@ -1,0 +1,419 @@
+/* ============================================
+   happios.dev - Custom Design System
+   Palette Naturelle avec support Dark Mode
+   ============================================ */
+
+/* === Variables de couleurs === */
+:root {
+  /* Palette de base */
+  --color-alabaster: #EEECE6;
+  --color-silken: #D9D1C4;
+  --color-moss: #A3AE98;
+  --color-taupe: #8E8274;
+  --color-juniper: #44554E;
+  --color-onyx: #222222;
+  
+  /* Light Mode - Rôles sémantiques */
+  --bg-primary: var(--color-alabaster);
+  --bg-secondary: var(--color-silken);
+  --surface: var(--color-moss);
+  --accent-primary: var(--color-juniper);
+  --text-primary: var(--color-onyx);
+  --text-secondary: var(--color-juniper);
+  --border: var(--color-taupe);
+  
+  /* iOS System equivalents */
+  --system-background: var(--color-alabaster);
+  --secondary-system-background: var(--color-silken);
+  --label: var(--color-onyx);
+  --secondary-label: var(--color-juniper);
+  --tint-color: var(--color-juniper);
+  --separator: var(--color-taupe);
+  
+  /* Ombres douces */
+  --shadow-sm: 0 1px 2px rgba(34, 34, 34, 0.1);
+  --shadow-md: 0 4px 6px rgba(34, 34, 34, 0.1);
+  --shadow-lg: 0 10px 15px rgba(34, 34, 34, 0.15);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: var(--color-onyx);
+    --bg-secondary: var(--color-juniper);
+    --surface: var(--color-taupe);
+    --accent-primary: var(--color-moss);
+    --text-primary: var(--color-alabaster);
+    --text-secondary: var(--color-silken);
+    --border: var(--color-moss);
+    
+    --system-background: var(--color-onyx);
+    --secondary-system-background: var(--color-juniper);
+    --label: var(--color-alabaster);
+    --secondary-label: var(--color-silken);
+    --tint-color: var(--color-moss);
+    --separator: var(--color-moss);
+    
+    --shadow-sm: 0 1px 2px rgba(163, 174, 152, 0.1);
+    --shadow-md: 0 4px 6px rgba(163, 174, 152, 0.15);
+    --shadow-lg: 0 10px 15px rgba(163, 174, 152, 0.2);
+  }
+}
+
+/* === Reset & Base === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 
+    'Segoe UI', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* === Classes utilitaires === */
+
+/* Backgrounds */
+.bg-primary {
+  background-color: var(--bg-primary);
+}
+
+.bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.bg-surface {
+  background-color: var(--surface);
+}
+
+.bg-accent {
+  background-color: var(--accent-primary);
+}
+
+/* Text */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-accent {
+  color: var(--accent-primary);
+}
+
+/* Borders */
+.border-default {
+  border-color: var(--border);
+}
+
+.border-accent {
+  border-color: var(--accent-primary);
+}
+
+/* Cards & Containers */
+.card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-elevated {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Buttons */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+/* Tabs */
+.tab-container {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.tab:hover {
+  background-color: var(--surface);
+  color: var(--text-primary);
+}
+
+.tab.active {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.badge-success {
+  background-color: var(--color-moss);
+  color: var(--color-onyx);
+}
+
+.badge-warning {
+  background-color: var(--color-taupe);
+  color: var(--color-alabaster);
+}
+
+.badge-error {
+  background-color: var(--color-juniper);
+  color: var(--color-alabaster);
+}
+
+.badge-info {
+  background-color: var(--color-silken);
+  color: var(--color-onyx);
+}
+
+/* Code blocks */
+.code-block {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+  font-size: 0.875rem;
+  overflow-x: auto;
+  color: var(--text-primary);
+}
+
+/* Dividers */
+.divider {
+  height: 1px;
+  background-color: var(--separator);
+  border: none;
+  margin: 1.5rem 0;
+}
+
+/* Alerts */
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  border-left: 4px solid;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.alert-info {
+  background-color: var(--bg-secondary);
+  border-left-color: var(--color-moss);
+  color: var(--text-primary);
+}
+
+.alert-warning {
+  background-color: var(--color-silken);
+  border-left-color: var(--color-taupe);
+  color: var(--color-onyx);
+}
+
+.alert-error {
+  background-color: var(--color-juniper);
+  border-left-color: var(--color-onyx);
+  color: var(--color-alabaster);
+}
+
+/* Progress bars */
+.progress-bar {
+  height: 8px;
+  background-color: var(--bg-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--accent-primary);
+  transition: width var(--transition-normal);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-normal);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  animation: slideIn var(--transition-normal);
+}
+
+/* Scroll styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .card {
+    padding: 1rem;
+  }
+  
+  .card-elevated {
+    padding: 1.5rem;
+  }
+  
+  .btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+  }
+  
+  .tab-container {
+    padding: 0.375rem;
+  }
+  
+  .tab {
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* Focus styles pour accessibilité */
+*:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+.tab:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+/* Print styles */
+@media print {
+  body {
+    background-color: white;
+    color: black;
+  }
+  
+  .card,
+  .card-elevated {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
