@@ -33,66 +33,167 @@ const IOSSecurityDemo = () => {
   };
 
   const OverviewTab = () => {
-    const [attackPhase, setAttackPhase] = useState(0);
-    
-    const phases = [
+    const [selectedLayer, setSelectedLayer] = useState(null);
+
+    const securityLayers = [
       {
-        title: "Application normale",
-        desc: "L'app fonctionne dans son environnement sécurisé",
-        amfi: "active",
-        sandbox: "active",
-        aslr: "active",
-        xn: "active",
-        threat: "none"
+        id: 'secureboot',
+        name: 'Secure Boot',
+        shortName: 'Boot',
+        level: 'Matériel/Firmware',
+        category: 'hardware',
+        color: 'green',
+        icon: '🔐',
+        description: 'Chaîne de confiance au démarrage',
+        details: 'Vérifie chaque composant du démarrage (Boot ROM → iBoot → Kernel) avec des signatures cryptographiques. Empêche le chargement de firmware ou OS modifiés.',
+        protects: 'Bootkits, rootkits firmware, OS compromis'
       },
       {
-        title: "Phase 1: Tentative de modification du binaire",
-        desc: "L'attaquant essaie de remplacer le code de l'app",
-        amfi: "blocking",
-        sandbox: "active",
-        aslr: "active",
-        xn: "active",
-        threat: "code-integrity"
+        id: 'secureenclave',
+        name: 'Secure Enclave',
+        shortName: 'SEP',
+        level: 'Matériel',
+        category: 'hardware',
+        color: 'purple',
+        icon: '🔒',
+        description: 'Processeur dédié à la sécurité',
+        details: 'Coprocesseur isolé avec son propre OS et mémoire chiffrée. Gère les clés de chiffrement, Face ID/Touch ID, et ne partage jamais les secrets avec le processeur principal.',
+        protects: 'Vol de clés cryptographiques, contournement biométrique'
       },
       {
-        title: "Phase 2: Tentative d'accès non autorisé",
-        desc: "L'app malveillante tente d'accéder aux photos",
-        amfi: "bypassed",
-        sandbox: "blocking",
-        aslr: "active",
-        xn: "active",
-        threat: "sandbox"
+        id: 'dataprotection',
+        name: 'Data Protection',
+        shortName: 'DP',
+        level: 'Système de fichiers',
+        category: 'data',
+        color: 'blue',
+        icon: '🗂️',
+        description: 'Chiffrement des fichiers par classe',
+        details: 'Chaque fichier a sa propre clé AES-256. Les classes de protection déterminent quand les fichiers sont accessibles (appareil verrouillé, déverrouillé, etc.).',
+        protects: 'Vol de données si appareil éteint/verrouillé'
       },
       {
-        title: "Phase 3: Tentative d'exploitation mémoire",
-        desc: "L'attaquant essaie de trouver des adresses à exploiter",
-        amfi: "bypassed",
-        sandbox: "bypassed",
-        aslr: "blocking",
-        xn: "active",
-        threat: "memory"
+        id: 'codesigning',
+        name: 'Code Signing',
+        shortName: 'Sign',
+        level: 'Application',
+        category: 'code',
+        color: 'indigo',
+        icon: '✍️',
+        description: 'Signature cryptographique du code',
+        details: 'Tout code exécutable doit être signé par Apple ou un développeur approuvé. Garantit l\'authenticité et l\'intégrité de chaque application.',
+        protects: 'Applications non autorisées, code tiers malveillant'
       },
       {
-        title: "Phase 4: Injection de code",
-        desc: "Code malveillant injecté dans la mémoire",
-        amfi: "bypassed",
-        sandbox: "bypassed",
-        aslr: "bypassed",
-        xn: "blocking",
-        threat: "execution"
+        id: 'amfi',
+        name: 'AMFI',
+        shortName: 'AMFI',
+        level: 'Noyau',
+        category: 'code',
+        color: 'indigo',
+        icon: '🛡️',
+        description: 'Vérification d\'intégrité en temps réel',
+        details: 'Apple Mobile File Integrity vérifie les signatures à l\'exécution via le kernel. Bloque immédiatement tout code modifié ou non signé.',
+        protects: 'Injection de code, modification de binaires'
       },
       {
-        title: "Attaque totalement bloquée",
-        desc: "Les quatre couches ont travaillé ensemble",
-        amfi: "active",
-        sandbox: "active",
-        aslr: "active",
-        xn: "active",
-        threat: "blocked"
+        id: 'sandbox',
+        name: 'Sandbox',
+        shortName: 'SB',
+        level: 'Système/App',
+        category: 'isolation',
+        color: 'green',
+        icon: '📦',
+        description: 'Isolation des applications',
+        details: 'Chaque app s\'exécute dans son propre conteneur isolé avec des permissions limitées. Doit demander explicitement l\'accès aux ressources système.',
+        protects: 'Accès non autorisé aux données, espionnage inter-apps'
+      },
+      {
+        id: 'aslr',
+        name: 'ASLR',
+        shortName: 'ASLR',
+        level: 'Mémoire',
+        category: 'memory',
+        color: 'purple',
+        icon: '🎲',
+        description: 'Randomisation des adresses mémoire',
+        details: 'Address Space Layout Randomization place le code et les données à des adresses aléatoires à chaque exécution. Rend les exploits mémoire imprévisibles.',
+        protects: 'Buffer overflow, ROP attacks, exploits mémoire'
+      },
+      {
+        id: 'xn',
+        name: 'XN Bit',
+        shortName: 'XN',
+        level: 'Processeur',
+        category: 'memory',
+        color: 'orange',
+        icon: '⛔',
+        description: 'Protection de la mémoire exécutable',
+        details: 'Execute Never marque les zones de données comme non-exécutables au niveau CPU. Même si du code est injecté, il ne peut pas s\'exécuter.',
+        protects: 'Exécution de shellcode, injection de code'
+      },
+      {
+        id: 'ats',
+        name: 'ATS',
+        shortName: 'ATS',
+        level: 'Réseau',
+        category: 'network',
+        color: 'blue',
+        icon: '🌐',
+        description: 'Sécurité du transport réseau',
+        details: 'App Transport Security force l\'utilisation de HTTPS avec TLS 1.2+ et certificats valides. Protège les communications réseau des apps.',
+        protects: 'Interception réseau, MITM, downgrade TLS'
       }
     ];
 
-    const currentPhase = phases[attackPhase];
+    const categories = [
+      { id: 'hardware', name: 'Matériel', color: 'from-amber-100 to-orange-100', border: 'border-amber-300' },
+      { id: 'data', name: 'Données', color: 'from-blue-100 to-cyan-100', border: 'border-blue-300' },
+      { id: 'code', name: 'Code', color: 'from-indigo-100 to-purple-100', border: 'border-indigo-300' },
+      { id: 'isolation', name: 'Isolation', color: 'from-green-100 to-emerald-100', border: 'border-green-300' },
+      { id: 'memory', name: 'Mémoire', color: 'from-purple-100 to-pink-100', border: 'border-purple-300' },
+      { id: 'network', name: 'Réseau', color: 'from-sky-100 to-blue-100', border: 'border-sky-300' }
+    ];
+
+    const getLayerStyles = (layer, isSelected) => {
+      const colorMap = {
+        green: { bg: 'bg-green-100', border: 'border-green-500', ring: 'ring-green-300' },
+        purple: { bg: 'bg-purple-100', border: 'border-purple-500', ring: 'ring-purple-300' },
+        blue: { bg: 'bg-blue-100', border: 'border-blue-500', ring: 'ring-blue-300' },
+        indigo: { bg: 'bg-indigo-100', border: 'border-indigo-500', ring: 'ring-indigo-300' },
+        orange: { bg: 'bg-orange-100', border: 'border-orange-500', ring: 'ring-orange-300' }
+      };
+      const colors = colorMap[layer.color] || colorMap.blue;
+      
+      if (isSelected) {
+        return `${colors.bg} ${colors.border} ring-2 ${colors.ring}`;
+      }
+      return 'bg-white border-gray-300 hover:border-gray-400';
+    };
+
+    const getDetailStyles = (color) => {
+      const styles = {
+        green: 'bg-green-50 border-green-300',
+        purple: 'bg-purple-50 border-purple-300',
+        blue: 'bg-blue-50 border-blue-300',
+        indigo: 'bg-indigo-50 border-indigo-300',
+        orange: 'bg-orange-50 border-orange-300'
+      };
+      return styles[color] || styles.blue;
+    };
+
+    const getBadgeStyles = (color) => {
+      const styles = {
+        green: 'bg-green-200 text-green-800',
+        purple: 'bg-purple-200 text-purple-800',
+        blue: 'bg-blue-200 text-blue-800',
+        indigo: 'bg-indigo-200 text-indigo-800',
+        orange: 'bg-orange-200 text-orange-800'
+      };
+      return styles[color] || styles.blue;
+    };
+
+    const selectedLayerData = securityLayers.find(l => l.id === selectedLayer);
 
     return (
       <div className="space-y-6">
@@ -101,231 +202,117 @@ const IOSSecurityDemo = () => {
             <Layers className="w-6 h-6 text-blue-600" />
             Défense en Profondeur (Defense in Depth)
           </h3>
-          <p className="text-sm text-gray-700 mb-4">
-            iOS utilise quatre couches de sécurité complémentaires. Si une protection échoue, 
-            les autres restent actives pour bloquer l'attaque.
+          <p className="text-sm text-gray-700">
+            iOS implémente <strong>9 mécanismes de sécurité</strong> complémentaires, du matériel jusqu'au réseau. 
+            Chaque couche protège contre des menaces spécifiques. Cliquez sur un mécanisme pour en savoir plus.
           </p>
         </div>
 
-        <div className="flex gap-2 flex-wrap">
-          {phases.map((phase, idx) => (
-            <button
-              key={idx}
-              onClick={() => setAttackPhase(idx)}
-              className={`flex-1 min-w-[100px] py-2 px-2 rounded text-xs font-semibold transition-all ${
-                attackPhase === idx 
-                  ? 'bg-blue-600 text-white' 
-                  : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-              }`}
-            >
-              {idx === 0 ? 'Normal' : `Phase ${idx}`}
-            </button>
-          ))}
-        </div>
-
+        {/* Architecture visuelle en couches */}
         <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
-          <div className="mb-4">
-            <h4 className="font-bold text-lg mb-1">{currentPhase.title}</h4>
-            <p className="text-sm text-gray-600">{currentPhase.desc}</p>
-          </div>
-
-          <div className="space-y-4">
-            <div className={`p-4 rounded-lg border-2 transition-all duration-500 ${
-              currentPhase.amfi === 'blocking' ? 'border-yellow-400 bg-yellow-50 ring-4 ring-yellow-200' :
-              currentPhase.amfi === 'bypassed' ? 'border-red-300 bg-red-50' :
-              'border-indigo-300 bg-indigo-50'
-            }`}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Shield className={`w-5 h-5 ${
-                    currentPhase.amfi === 'blocking' ? 'text-yellow-600' :
-                    currentPhase.amfi === 'bypassed' ? 'text-red-600' :
-                    'text-indigo-600'
-                  }`} />
-                  <span className="font-bold">Couche 0: AMFI (Intégrité du code)</span>
-                </div>
-                {currentPhase.amfi === 'blocking' && (
-                  <AlertTriangle className="w-5 h-5 text-yellow-600 animate-pulse" />
-                )}
-                {currentPhase.amfi === 'bypassed' && (
-                  <XCircle className="w-5 h-5 text-red-600" />
-                )}
-                {currentPhase.amfi === 'active' && (
-                  <CheckCircle className="w-5 h-5 text-indigo-600" />
-                )}
-              </div>
-              <div className="text-sm">
-                <div className="font-semibold mb-1">Protège contre:</div>
-                <div className="text-gray-700">Exécution de code non signé ou modifié</div>
-              </div>
-              {currentPhase.amfi === 'blocking' && (
-                <div className="mt-2 text-sm bg-yellow-100 p-2 rounded">
-                  ⚠️ Signature invalide détectée - Exécution refusée
-                </div>
-              )}
-            </div>
-
-            <div className={`p-4 rounded-lg border-2 transition-all duration-500 ${
-              currentPhase.sandbox === 'blocking' ? 'border-yellow-400 bg-yellow-50 ring-4 ring-yellow-200' :
-              currentPhase.sandbox === 'bypassed' ? 'border-red-300 bg-red-50' :
-              'border-green-300 bg-green-50'
-            }`}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Lock className={`w-5 h-5 ${
-                    currentPhase.sandbox === 'blocking' ? 'text-yellow-600' :
-                    currentPhase.sandbox === 'bypassed' ? 'text-red-600' :
-                    'text-green-600'
-                  }`} />
-                  <span className="font-bold">Couche 1: Sandbox (Isolation)</span>
-                </div>
-                {currentPhase.sandbox === 'blocking' && (
-                  <AlertTriangle className="w-5 h-5 text-yellow-600 animate-pulse" />
-                )}
-                {currentPhase.sandbox === 'bypassed' && (
-                  <XCircle className="w-5 h-5 text-red-600" />
-                )}
-                {currentPhase.sandbox === 'active' && (
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                )}
-              </div>
-              <div className="text-sm">
-                <div className="font-semibold mb-1">Protège contre:</div>
-                <div className="text-gray-700">Accès non autorisés aux ressources système et autres apps</div>
-              </div>
-              {currentPhase.sandbox === 'blocking' && (
-                <div className="mt-2 text-sm bg-yellow-100 p-2 rounded">
-                  ⚠️ Bloque la tentative d'accès aux photos
-                </div>
-              )}
-            </div>
-
-            <div className={`p-4 rounded-lg border-2 transition-all duration-500 ${
-              currentPhase.aslr === 'blocking' ? 'border-yellow-400 bg-yellow-50 ring-4 ring-yellow-200' :
-              currentPhase.aslr === 'bypassed' ? 'border-red-300 bg-red-50' :
-              'border-blue-300 bg-blue-50'
-            }`}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <RefreshCw className={`w-5 h-5 ${
-                    currentPhase.aslr === 'blocking' ? 'text-yellow-600' :
-                    currentPhase.aslr === 'bypassed' ? 'text-red-600' :
-                    'text-blue-600'
-                  }`} />
-                  <span className="font-bold">Couche 2: ASLR (Randomisation)</span>
-                </div>
-                {currentPhase.aslr === 'blocking' && (
-                  <AlertTriangle className="w-5 h-5 text-yellow-600 animate-pulse" />
-                )}
-                {currentPhase.aslr === 'bypassed' && (
-                  <XCircle className="w-5 h-5 text-red-600" />
-                )}
-                {currentPhase.aslr === 'active' && (
-                  <CheckCircle className="w-5 h-5 text-blue-600" />
-                )}
-              </div>
-              <div className="text-sm">
-                <div className="font-semibold mb-1">Protège contre:</div>
-                <div className="text-gray-700">Exploits basés sur des adresses mémoire prévisibles</div>
-              </div>
-              {currentPhase.aslr === 'blocking' && (
-                <div className="mt-2 text-sm bg-yellow-100 p-2 rounded">
-                  ⚠️ Adresses randomisées - exploitation impossible
-                </div>
-              )}
-            </div>
-
-            <div className={`p-4 rounded-lg border-2 transition-all duration-500 ${
-              currentPhase.xn === 'blocking' ? 'border-yellow-400 bg-yellow-50 ring-4 ring-yellow-200' :
-              currentPhase.xn === 'bypassed' ? 'border-red-300 bg-red-50' :
-              'border-purple-300 bg-purple-50'
-            }`}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <XCircle className={`w-5 h-5 ${
-                    currentPhase.xn === 'blocking' ? 'text-yellow-600' :
-                    currentPhase.xn === 'bypassed' ? 'text-red-600' :
-                    'text-purple-600'
-                  }`} />
-                  <span className="font-bold">Couche 3: XN Bit (Non-exécution)</span>
-                </div>
-                {currentPhase.xn === 'blocking' && (
-                  <AlertTriangle className="w-5 h-5 text-yellow-600 animate-pulse" />
-                )}
-                {currentPhase.xn === 'active' && (
-                  <CheckCircle className="w-5 h-5 text-purple-600" />
-                )}
-              </div>
-              <div className="text-sm">
-                <div className="font-semibold mb-1">Protège contre:</div>
-                <div className="text-gray-700">Exécution de code malveillant injecté en mémoire</div>
-              </div>
-              {currentPhase.xn === 'blocking' && (
-                <div className="mt-2 text-sm bg-yellow-100 p-2 rounded">
-                  ⚠️ Code injecté détecté - exécution refusée - Crash
-                </div>
-              )}
-            </div>
-          </div>
-
-          {attackPhase === 5 && (
-            <div className="mt-6 p-4 bg-green-50 border-2 border-green-400 rounded-lg">
-              <div className="flex items-start gap-3">
-                <Shield className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-                <div>
-                  <div className="font-bold text-green-800 text-lg mb-2">
-                    Attaque totalement bloquée !
-                  </div>
-                  <div className="text-sm text-gray-700 space-y-1">
-                    <p>✅ <strong>AMFI</strong> a vérifié l'intégrité et la signature du code</p>
-                    <p>✅ <strong>Sandbox</strong> a empêché l'accès direct aux ressources</p>
-                    <p>✅ <strong>ASLR</strong> a rendu l'exploitation mémoire imprévisible</p>
-                    <p>✅ <strong>XN Bit</strong> a bloqué l'exécution du code injecté</p>
-                    <p className="mt-3 font-semibold">
-                      L'attaquant devrait contourner les QUATRE protections simultanément - 
-                      une tâche extrêmement difficile voire impossible.
-                    </p>
+          <h4 className="font-semibold mb-4 text-center text-gray-700">Architecture de Sécurité iOS</h4>
+          
+          <div className="space-y-3">
+            {categories.map(category => {
+              const layersInCategory = securityLayers.filter(l => l.category === category.id);
+              return (
+                <div key={category.id} className={`bg-gradient-to-r ${category.color} border-2 ${category.border} rounded-lg p-3`}>
+                  <div className="text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wide">{category.name}</div>
+                  <div className="flex flex-wrap gap-2">
+                    {layersInCategory.map(layer => (
+                      <button
+                        key={layer.id}
+                        onClick={() => setSelectedLayer(selectedLayer === layer.id ? null : layer.id)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg border-2 transition-all text-sm font-medium ${getLayerStyles(layer, selectedLayer === layer.id)}`}
+                      >
+                        <span>{layer.icon}</span>
+                        <span>{layer.shortName}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
+              );
+            })}
+          </div>
         </div>
 
+        {/* Détails du mécanisme sélectionné */}
+        {selectedLayerData && (
+          <div className={`${getDetailStyles(selectedLayerData.color)} border-2 rounded-lg p-6 transition-all`}>
+            <div className="flex items-start gap-4">
+              <div className="text-4xl">{selectedLayerData.icon}</div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                  <h4 className="font-bold text-lg">{selectedLayerData.name}</h4>
+                  <span className={`text-xs px-2 py-1 rounded ${getBadgeStyles(selectedLayerData.color)}`}>
+                    {selectedLayerData.level}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-700 mb-3">{selectedLayerData.details}</p>
+                <div className="bg-white border border-gray-200 rounded p-3">
+                  <div className="text-xs font-semibold text-gray-500 uppercase mb-1">Protège contre</div>
+                  <div className="text-sm text-gray-800">{selectedLayerData.protects}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Tableau récapitulatif complet */}
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-3">Récapitulatif des couches de défense</h4>
+          <h4 className="font-semibold mb-3">Récapitulatif des 9 mécanismes de sécurité</h4>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b-2 border-gray-300">
                   <th className="text-left py-2 px-2">Mécanisme</th>
                   <th className="text-left py-2 px-2">Niveau</th>
-                  <th className="text-left py-2 px-2">Objectif</th>
+                  <th className="text-left py-2 px-2">Rôle principal</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-gray-200">
-                  <td className="py-2 px-2 font-semibold">AMFI</td>
-                  <td className="py-2 px-2">Noyau</td>
-                  <td className="py-2 px-2">Vérifier que le code est <em>signé et non modifié</em></td>
-                </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-2 px-2 font-semibold">Sandbox</td>
-                  <td className="py-2 px-2">Système/App</td>
-                  <td className="py-2 px-2">Limiter ce qu'une app <em>peut faire</em></td>
-                </tr>
-                <tr className="border-b border-gray-200">
-                  <td className="py-2 px-2 font-semibold">ASLR</td>
-                  <td className="py-2 px-2">Mémoire</td>
-                  <td className="py-2 px-2">Rendre difficile de <em>trouver</em> où attaquer</td>
-                </tr>
-                <tr>
-                  <td className="py-2 px-2 font-semibold">XN Bit</td>
-                  <td className="py-2 px-2">Processeur</td>
-                  <td className="py-2 px-2">Empêcher <em>l'exécution</em> de code injecté</td>
-                </tr>
+                {securityLayers.map((layer) => (
+                  <tr 
+                    key={layer.id} 
+                    className={`border-b border-gray-200 cursor-pointer hover:bg-gray-100 ${
+                      selectedLayer === layer.id ? 'bg-blue-50' : ''
+                    }`}
+                    onClick={() => setSelectedLayer(selectedLayer === layer.id ? null : layer.id)}
+                  >
+                    <td className="py-2 px-2 font-semibold">
+                      <span className="mr-2">{layer.icon}</span>
+                      {layer.name}
+                    </td>
+                    <td className="py-2 px-2 text-gray-600">{layer.level}</td>
+                    <td className="py-2 px-2">{layer.description}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
+          </div>
+        </div>
+
+        {/* Schéma de flux d'une attaque */}
+        <div className="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-200 rounded-lg p-4">
+          <h4 className="font-semibold mb-3 flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5 text-red-600" />
+            Comment ces protections travaillent ensemble
+          </h4>
+          <div className="text-sm text-gray-700 space-y-2">
+            <p>Pour compromettre un iPhone, un attaquant devrait:</p>
+            <ol className="list-decimal list-inside space-y-1 ml-2">
+              <li><strong>Secure Boot</strong> → Remplacer le firmware/OS (impossible sans clé Apple)</li>
+              <li><strong>Code Signing + AMFI</strong> → Faire exécuter du code non signé</li>
+              <li><strong>Sandbox</strong> → S'échapper de l'isolation pour accéder aux données</li>
+              <li><strong>Data Protection</strong> → Déchiffrer les fichiers protégés</li>
+              <li><strong>Secure Enclave</strong> → Extraire les clés cryptographiques</li>
+              <li><strong>ASLR + XN</strong> → Exploiter la mémoire malgré la randomisation</li>
+              <li><strong>ATS</strong> → Intercepter le trafic réseau chiffré</li>
+            </ol>
+            <p className="mt-3 font-semibold text-red-700">
+              Contourner toutes ces protections simultanément est extrêmement difficile, 
+              ce qui explique pourquoi les exploits iOS complets valent des millions de dollars.
+            </p>
           </div>
         </div>
       </div>
@@ -845,6 +832,450 @@ const IOSSecurityDemo = () => {
             pourraient être contournées en installant un système d'exploitation malveillant. 
             Le Secure Boot est la <strong>racine de confiance</strong> qui garantit que tout commence bien.
           </p>
+        </div>
+      </div>
+    );
+  };
+
+  const CodeSigningTab = () => {
+    const [signatureProcess, setSignatureProcess] = useState(0);
+    const [certificateType, setCertificateType] = useState('development');
+    const [selectedEntitlement, setSelectedEntitlement] = useState(null);
+    const [showVerification, setShowVerification] = useState(false);
+
+    const certificates = {
+      development: {
+        name: "Development",
+        icon: "🔧",
+        color: "blue",
+        desc: "Test sur vos propres appareils",
+        devices: "Limité aux devices enregistrés",
+        duration: "1 an",
+        status: "valid"
+      },
+      adhoc: {
+        name: "Ad Hoc",
+        icon: "👥",
+        color: "purple",
+        desc: "Distribution à des testeurs (max 100)",
+        devices: "Limité à 100 devices UDIDs",
+        duration: "1 an",
+        status: "valid"
+      },
+      enterprise: {
+        name: "Enterprise",
+        icon: "🏢",
+        color: "orange",
+        desc: "Distribution interne en entreprise",
+        devices: "Illimité (employés uniquement)",
+        duration: "1 an",
+        status: "valid"
+      },
+      appstore: {
+        name: "App Store",
+        icon: "🏪",
+        color: "green",
+        desc: "Distribution publique via App Store",
+        devices: "Tous les appareils iOS",
+        duration: "Re-signé par Apple",
+        status: "valid"
+      },
+      expired: {
+        name: "Certificat Expiré",
+        icon: "⏰",
+        color: "red",
+        desc: "Certificat expiré ou révoqué",
+        devices: "N/A",
+        duration: "Expiré",
+        status: "expired"
+      }
+    };
+
+    const entitlements = {
+      sandbox: {
+        name: "App Sandbox",
+        key: "com.apple.security.app-sandbox",
+        icon: "🔒",
+        required: true,
+        desc: "Isolation de l'application (obligatoire)"
+      },
+      icloud: {
+        name: "iCloud",
+        key: "com.apple.developer.icloud-services",
+        icon: "☁️",
+        required: false,
+        desc: "Accès au stockage iCloud"
+      },
+      healthkit: {
+        name: "HealthKit",
+        key: "com.apple.developer.healthkit",
+        icon: "💪",
+        required: false,
+        desc: "Accès aux données de santé"
+      },
+      push: {
+        name: "Push Notifications",
+        key: "aps-environment",
+        icon: "🔔",
+        required: false,
+        desc: "Notifications push"
+      },
+      wallet: {
+        name: "Apple Pay/Wallet",
+        key: "com.apple.developer.pass-type-identifiers",
+        icon: "💳",
+        required: false,
+        desc: "Intégration Wallet"
+      }
+    };
+
+    const signingSteps = [
+      {
+        title: "Développement de l'App",
+        desc: "Le développeur écrit le code en Swift/Objective-C",
+        icon: "👨‍💻",
+        color: "blue"
+      },
+      {
+        title: "Compilation",
+        desc: "Xcode compile le code source en binaire Mach-O",
+        icon: "⚙️",
+        color: "purple"
+      },
+      {
+        title: "Ajout des Entitlements",
+        desc: "Configuration des permissions et capacités",
+        icon: "🔑",
+        color: "orange"
+      },
+      {
+        title: "Signature Cryptographique",
+        desc: "Hash SHA-256 + Signature avec certificat développeur",
+        icon: "✍️",
+        color: "green"
+      },
+      {
+        title: "Profil de Provisionnement",
+        desc: "embedded.mobileprovision ajouté à l'app",
+        icon: "📄",
+        color: "indigo"
+      },
+      {
+        title: "Signature Apple (si App Store)",
+        desc: "Apple re-signe avec son propre certificat",
+        icon: "🍎",
+        color: "red"
+      }
+    ];
+
+    return (
+      <div className="space-y-6">
+        <div className="bg-indigo-50 border-2 border-indigo-200 rounded-lg p-6">
+          <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+            <Shield className="w-5 h-5 text-indigo-600" />
+            Code Signing - Signature Cryptographique
+          </h3>
+          <p className="text-sm mb-3">
+            Le Code Signing est le processus par lequel Apple garantit que chaque app provient 
+            d'une source connue et n'a pas été modifiée depuis sa signature. C'est la fondation 
+            qui permet à AMFI de vérifier l'intégrité du code.
+          </p>
+          <div className="text-sm bg-white border border-indigo-200 rounded p-3">
+            <p className="font-semibold mb-2">Composants clés:</p>
+            <ul className="space-y-1 text-gray-700 text-xs">
+              <li>• <strong>Certificat:</strong> Identité du développeur (fourni par Apple)</li>
+              <li>• <strong>Profil de provisionnement:</strong> Permissions + devices autorisés</li>
+              <li>• <strong>Entitlements:</strong> Capacités spécifiques de l'app</li>
+              <li>• <strong>Code Signature:</strong> Hash cryptographique (SHA-256) du binaire</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Processus de signature */}
+        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+          <h4 className="font-bold mb-4">Processus de Signature (Étape par Étape)</h4>
+          
+          <div className="flex gap-2 flex-wrap mb-6">
+            {signingSteps.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setSignatureProcess(idx)}
+                className={`flex-1 min-w-[80px] py-2 px-2 rounded text-xs font-semibold transition-all ${
+                  signatureProcess === idx 
+                    ? 'bg-indigo-600 text-white' 
+                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                }`}
+              >
+                Étape {idx + 1}
+              </button>
+            ))}
+          </div>
+
+          <div className="space-y-3">
+            {signingSteps.map((step, idx) => {
+              const isActive = idx === signatureProcess;
+              const isPast = idx < signatureProcess;
+              const isFuture = idx > signatureProcess;
+
+              return (
+                <div key={idx}>
+                  <div className={`p-4 rounded-lg border-2 transition-all ${
+                    isActive ? `border-${step.color}-500 bg-${step.color}-50 ring-4 ring-${step.color}-200 scale-105` :
+                    isPast ? `border-${step.color}-300 bg-${step.color}-50` :
+                    'border-gray-300 bg-gray-50 opacity-40'
+                  }`}>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className={`text-2xl ${isActive ? 'animate-pulse' : ''}`}>
+                        {step.icon}
+                      </div>
+                      <div>
+                        <div className="font-bold">{step.title}</div>
+                        <div className="text-sm text-gray-600">{step.desc}</div>
+                      </div>
+                      {isPast && <CheckCircle className="w-5 h-5 text-green-600 ml-auto" />}
+                    </div>
+
+                    {isActive && idx === 3 && (
+                      <div className="mt-3 p-3 bg-white rounded border border-gray-300 font-mono text-xs">
+                        <div className="text-gray-600 mb-1"># Calcul du hash SHA-256</div>
+                        <div className="text-green-600">$ shasum -a 256 MyApp</div>
+                        <div className="mt-2 text-gray-800 break-all">
+                          a3f2c1d9e8b7f6a5d4c3b2a1908f7e6d5c4b3a2918273645f...
+                        </div>
+                        <div className="mt-2 text-gray-600"># Signature avec certificat</div>
+                        <div className="text-green-600">$ codesign -s "iPhone Developer" MyApp.app</div>
+                      </div>
+                    )}
+
+                    {isActive && idx === 4 && (
+                      <div className="mt-3 p-3 bg-white rounded border border-gray-300">
+                        <div className="text-xs font-semibold mb-2">Contenu du profil:</div>
+                        <div className="space-y-1 text-xs text-gray-700">
+                          <div>• Team ID: ABC123XYZ</div>
+                          <div>• Bundle ID: com.example.myapp</div>
+                          <div>• Devices autorisés: 5 appareils</div>
+                          <div>• Expiration: 25 décembre 2026</div>
+                          <div>• Entitlements inclus: iCloud, HealthKit</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {idx < signingSteps.length - 1 && !isFuture && (
+                    <div className="flex justify-center py-2">
+                      <div className="text-2xl text-gray-400">⬇️</div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Types de certificats */}
+        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+          <h4 className="font-bold mb-4">Types de Certificats et Distribution</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {Object.entries(certificates).map(([key, cert]) => (
+              <button
+                key={key}
+                onClick={() => setCertificateType(key)}
+                className={`p-4 rounded-lg border-2 transition-all text-left ${
+                  certificateType === key
+                    ? `border-${cert.color}-500 bg-${cert.color}-50 ring-4 ring-${cert.color}-200`
+                    : 'border-gray-300 bg-white hover:border-gray-400'
+                } ${cert.status === 'expired' ? 'opacity-75' : ''}`}
+              >
+                <div className="flex items-start gap-3 mb-2">
+                  <div className="text-3xl">{cert.icon}</div>
+                  <div className="flex-1">
+                    <div className="font-bold flex items-center gap-2">
+                      {cert.name}
+                      {cert.status === 'expired' && (
+                        <span className="text-xs bg-red-200 text-red-800 px-2 py-0.5 rounded">Expiré</span>
+                      )}
+                    </div>
+                    <div className="text-xs text-gray-600 mt-1">{cert.desc}</div>
+                  </div>
+                </div>
+                <div className="text-xs space-y-1 mt-3 pt-3 border-t border-gray-200">
+                  <div><strong>Devices:</strong> {cert.devices}</div>
+                  <div><strong>Durée:</strong> {cert.duration}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {certificateType === 'expired' && (
+            <div className="mt-4 p-4 bg-red-50 border-2 border-red-300 rounded-lg">
+              <div className="flex items-start gap-2">
+                <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <div className="font-bold text-red-800 mb-1">Certificat Expiré/Révoqué</div>
+                  <div className="text-gray-700">
+                    • Apps déjà installées: Continuent de fonctionner<br/>
+                    • Nouvelles installations: Refusées par iOS<br/>
+                    • Si révoqué par Apple: AMFI refuse de lancer l'app
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Entitlements */}
+        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+          <h4 className="font-bold mb-4">Entitlements - Permissions de l'App</h4>
+          <p className="text-sm text-gray-600 mb-4">
+            Les entitlements définissent ce que l'app est autorisée à faire. Ils sont vérifiés 
+            par le système au runtime.
+          </p>
+
+          <div className="space-y-2">
+            {Object.entries(entitlements).map(([key, ent]) => (
+              <div
+                key={key}
+                onClick={() => setSelectedEntitlement(key)}
+                className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                  selectedEntitlement === key
+                    ? 'border-blue-500 bg-blue-50 ring-4 ring-blue-200'
+                    : 'border-gray-300 bg-white hover:border-gray-400'
+                } ${ent.required ? 'border-l-4 border-l-red-500' : ''}`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">{ent.icon}</div>
+                    <div>
+                      <div className="font-semibold flex items-center gap-2">
+                        {ent.name}
+                        {ent.required && (
+                          <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">
+                            Obligatoire
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-gray-600">{ent.desc}</div>
+                    </div>
+                  </div>
+                  <code className="text-xs bg-gray-100 px-2 py-1 rounded">
+                    {ent.key.split('.').pop()}
+                  </code>
+                </div>
+
+                {selectedEntitlement === key && (
+                  <div className="mt-3 pt-3 border-t border-gray-200">
+                    <div className="text-xs font-mono bg-gray-800 text-green-400 p-3 rounded overflow-x-auto">
+                      <div>{'<key>'}{ent.key}{'</key>'}</div>
+                      <div>{'<true/>'}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Anatomie d'une app signée */}
+        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+          <h4 className="font-bold mb-4">Anatomie d'une App Signée</h4>
+          <div className="bg-gray-800 text-green-400 p-4 rounded font-mono text-xs space-y-1">
+            <div>📱 MyApp.app/</div>
+            <div className="ml-4">├── 📄 MyApp <span className="text-gray-500">(binaire exécutable)</span></div>
+            <div className="ml-4">├── 📋 Info.plist <span className="text-gray-500">(métadonnées)</span></div>
+            <div className="ml-4">├── 🔐 _CodeSignature/</div>
+            <div className="ml-8">│   └── CodeResources <span className="text-gray-500">(hash de tous les fichiers)</span></div>
+            <div className="ml-4">├── 📄 embedded.mobileprovision <span className="text-gray-500">(profil)</span></div>
+            <div className="ml-4">├── 🖼️  Assets.car <span className="text-gray-500">(images, icônes)</span></div>
+            <div className="ml-4">└── 📚 Frameworks/ <span className="text-gray-500">(bibliothèques)</span></div>
+          </div>
+        </div>
+
+        {/* Vérification de signature */}
+        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+          <h4 className="font-bold mb-4">Vérifier une Signature (Outils développeur)</h4>
+          
+          <button
+            onClick={() => setShowVerification(!showVerification)}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-all mb-4"
+          >
+            {showVerification ? 'Masquer' : 'Afficher'} les commandes de vérification
+          </button>
+
+          {showVerification && (
+            <div className="space-y-4">
+              <div>
+                <div className="text-sm font-semibold mb-2">1. Vérifier la signature</div>
+                <div className="bg-gray-800 text-green-400 p-3 rounded font-mono text-xs">
+                  <div>$ codesign -dvvv MyApp.app</div>
+                  <div className="text-gray-400 mt-2"># Affiche:</div>
+                  <div className="text-white">Executable=/path/to/MyApp.app/MyApp</div>
+                  <div className="text-white">Identifier=com.example.myapp</div>
+                  <div className="text-white">Authority=iPhone Developer: John Doe</div>
+                  <div className="text-white">Signed Time=26 déc. 2025 à 10:30:00</div>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm font-semibold mb-2">2. Afficher les entitlements</div>
+                <div className="bg-gray-800 text-green-400 p-3 rounded font-mono text-xs">
+                  <div>$ codesign -d --entitlements - MyApp.app</div>
+                  <div className="text-gray-400 mt-2"># Affiche tous les entitlements en XML</div>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-sm font-semibold mb-2">3. Vérifier le profil de provisionnement</div>
+                <div className="bg-gray-800 text-green-400 p-3 rounded font-mono text-xs">
+                  <div>$ security cms -D -i MyApp.app/embedded.mobileprovision</div>
+                  <div className="text-gray-400 mt-2"># Décode et affiche le profil</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Chaîne de certificats */}
+        <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
+          <h4 className="font-semibold mb-3 text-sm">Chaîne de Confiance (Certificate Chain)</h4>
+          <div className="space-y-3">
+            <div className="p-3 bg-blue-50 rounded border-2 border-blue-300">
+              <div className="font-bold text-sm">🍎 Apple Root CA</div>
+              <div className="text-xs text-gray-600">Autorité de certification racine d'Apple</div>
+            </div>
+            <div className="text-center text-gray-400">⬇️ Signe</div>
+            <div className="p-3 bg-purple-50 rounded border-2 border-purple-300">
+              <div className="font-bold text-sm">🌐 Apple WWDR CA</div>
+              <div className="text-xs text-gray-600">Worldwide Developer Relations</div>
+            </div>
+            <div className="text-center text-gray-400">⬇️ Signe</div>
+            <div className="p-3 bg-green-50 rounded border-2 border-green-300">
+              <div className="font-bold text-sm">👤 Certificat Développeur</div>
+              <div className="text-xs text-gray-600">iPhone Developer: John Doe (ABC123)</div>
+            </div>
+            <div className="text-center text-gray-400">⬇️ Signe</div>
+            <div className="p-3 bg-indigo-50 rounded border-2 border-indigo-300">
+              <div className="font-bold text-sm">📱 MyApp.app</div>
+              <div className="text-xs text-gray-600">L'application finale signée</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
+          <h4 className="font-semibold mb-2 text-sm">Relation avec AMFI:</h4>
+          <div className="text-sm text-gray-700 space-y-2">
+            <p>
+              <strong>Code Signing</strong> est le <em>processus</em> par lequel les développeurs 
+              signent leurs apps avec des certificats Apple.
+            </p>
+            <p>
+              <strong>AMFI</strong> est le <em>mécanisme de vérification</em> qui s'assure au runtime 
+              que la signature est valide et que le code n'a pas été modifié.
+            </p>
+            <p className="pt-2 border-t border-blue-200">
+              💡 Sans Code Signing, AMFI n'aurait rien à vérifier. Ensemble, ils garantissent 
+              que seul du code légitime s'exécute sur iOS.
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -1847,6 +2278,16 @@ const IOSSecurityDemo = () => {
               Data Protection
             </button>
             <button
+              onClick={() => setActiveTab('codesigning')}
+              className={`px-3 py-3 font-semibold transition-all whitespace-nowrap text-xs ${
+                activeTab === 'codesigning'
+                  ? 'border-b-4 border-indigo-600 text-indigo-600'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Code Signing
+            </button>
+            <button
               onClick={() => setActiveTab('amfi')}
               className={`px-3 py-3 font-semibold transition-all whitespace-nowrap text-xs ${
                 activeTab === 'amfi'
@@ -1906,6 +2347,8 @@ const IOSSecurityDemo = () => {
             <SecureEnclaveTab />
           ) : activeTab === 'dataprotection' ? (
             <DataProtectionTab />
+          ) : activeTab === 'codesigning' ? (
+            <CodeSigningTab />
           ) : activeTab === 'amfi' ? (
             <AMFITab />
           ) : activeTab === 'sandbox' ? (
