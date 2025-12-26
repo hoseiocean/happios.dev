@@ -10,6 +10,124 @@
       content="iOS Security Architecture Demo - Démonstration interactive de l'architecture de sécurité iOS"
     />
     <title>iOS Security Demo - happios.dev</title>
+    
+    <!-- Tailwind CDN avec configuration custom -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'media',
+        theme: {
+          extend: {
+            colors: {
+              // Palette happios.dev
+              alabaster: '#EEECE6',
+              silken: '#D9D1C4',
+              moss: '#A3AE98',
+              taupe: '#8E8274',
+              juniper: '#44554E',
+              onyx: '#222222',
+            },
+            fontFamily: {
+              sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'Helvetica Neue', 'sans-serif'],
+              mono: ['SF Mono', 'Monaco', 'Menlo', 'Consolas', 'monospace'],
+            },
+          }
+        }
+      }
+    </script>
+    
+    <!-- Styles custom pour dark mode et overrides -->
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply bg-alabaster text-onyx;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+          body {
+            @apply bg-onyx text-alabaster;
+          }
+        }
+      }
+      
+      @layer components {
+        /* Overrides pour le composant existant */
+        .bg-white {
+          @apply bg-silken dark:bg-juniper;
+        }
+        
+        .bg-gray-50,
+        .bg-blue-50,
+        .bg-green-50,
+        .bg-purple-50,
+        .bg-indigo-50,
+        .bg-yellow-50,
+        .bg-red-50 {
+          @apply bg-silken dark:bg-juniper;
+        }
+        
+        .bg-gray-100,
+        .bg-yellow-100 {
+          @apply bg-silken dark:bg-juniper/70;
+        }
+        
+        .bg-gray-200 {
+          @apply bg-moss/30 dark:bg-taupe/50;
+        }
+        
+        .bg-gray-300 {
+          @apply bg-taupe dark:bg-moss;
+        }
+        
+        .bg-blue-600,
+        .bg-indigo-600,
+        .bg-green-600 {
+          @apply bg-juniper dark:bg-moss;
+        }
+        
+        .text-white {
+          @apply text-alabaster dark:text-onyx;
+        }
+        
+        .text-gray-600,
+        .text-gray-700 {
+          @apply text-juniper dark:text-silken;
+        }
+        
+        .text-blue-600,
+        .text-indigo-600,
+        .text-green-600,
+        .text-yellow-600,
+        .text-red-600 {
+          @apply text-juniper dark:text-moss;
+        }
+        
+        .border-gray-200,
+        .border-gray-300 {
+          @apply border-taupe dark:border-moss;
+        }
+        
+        .border-blue-300,
+        .border-indigo-300,
+        .border-green-300,
+        .border-yellow-300,
+        .border-yellow-400,
+        .border-red-300 {
+          @apply border-juniper dark:border-moss;
+        }
+        
+        .hover\:bg-gray-300:hover {
+          @apply bg-taupe dark:bg-moss;
+        }
+        
+        .hover\:bg-blue-700:hover,
+        .hover\:bg-indigo-700:hover {
+          @apply bg-juniper/90 dark:bg-moss/90;
+        }
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

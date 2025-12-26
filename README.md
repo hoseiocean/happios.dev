@@ -1,176 +1,145 @@
 # 🌿 iOS Security Demo - happios.dev
 
-Démonstration interactive de l'architecture de sécurité iOS avec un design system élégant et naturel.
+Démonstration interactive de l'architecture de sécurité iOS avec Tailwind CSS CDN et palette de couleurs custom.
 
-## ✨ Fonctionnalités
+## ✨ Points clés
 
-- 🔒 **Architecture de sécurité iOS complète**
-  - AMFI (Apple Mobile File Integrity)
-  - Sandbox (Isolation des applications)
-  - ASLR (Address Space Layout Randomization)
-  - XN Bit (Execute Never)
-  - ATS (App Transport Security)
-  - Secure Boot
-  - Secure Enclave
-  - Data Protection
+✅ **Tailwind CSS via CDN** - Pas de build complexe, configuration directe dans HTML
+✅ **Palette custom intégrée** - 6 couleurs (Alabaster, Silken, Moss, Taupe, Juniper, Onyx)
+✅ **Dark mode automatique** - Selon préférences système
+✅ **Composant inchangé** - Overrides CSS pour mapper les couleurs
 
-- 🎨 **Design system custom**
-  - Palette de 6 couleurs naturelles
-  - Dark mode automatique
-  - Animations fluides
-  - Responsive design
+## 🎨 Configuration Tailwind
 
-- ♿ **Accessibilité**
-  - Contraste WCAG AA
-  - Focus visible
-  - Navigation clavier
+La configuration est directement dans `public/index.html` :
 
-## 🎨 Palette de couleurs
+```html
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'media',
+    theme: {
+      extend: {
+        colors: {
+          alabaster: '#EEECE6',
+          silken: '#D9D1C4',
+          moss: '#A3AE98',
+          taupe: '#8E8274',
+          juniper: '#44554E',
+          onyx: '#222222',
+        }
+      }
+    }
+  }
+</script>
+```
 
-| Nom           | HEX         | Usage                    |
-| ------------- | ----------- | ------------------------ |
-| **Alabaster** | `#EEECE6`   | Background principal     |
-| **Silken**    | `#D9D1C4`   | Cards, sections          |
-| **Moss**      | `#A3AE98`   | Surfaces, accents        |
-| **Taupe**     | `#8E8274`   | Borders, séparateurs     |
-| **Juniper**   | `#44554E`   | CTA, liens               |
-| **Onyx**      | `#222222`   | Texte principal          |
+## 🎯 Avantages de cette approche
 
-Voir [PALETTE_DOCUMENTATION.md](./PALETTE_DOCUMENTATION.md) pour plus de détails.
+### ✅ Avec Tailwind CDN
 
-## 🚀 Déploiement
+- **Simple** : Un seul fichier HTML à éditer
+- **Rapide** : Pas de build Tailwind séparé
+- **Flexible** : Changement de couleur = 1 ligne à modifier
+- **Léger** : Tailwind purge automatiquement les classes non utilisées en production
 
-### Prérequis
+### ⚠️ Comparé à l'approche CSS custom
 
-- Node.js 16+
-- npm
-- Git
+- **CDN** : Configuration dans HTML, classes Tailwind natives disponibles
+- **CSS custom** : Plus de contrôle bas niveau, variables CSS réutilisables
+- **Les deux** : Fonctionnent parfaitement !
 
-### Installation locale
+## 🚀 Utilisation
+
+### Installation
 
 ```bash
-# Cloner le projet
-git clone https://github.com/hoseiocean/happios.dev.git
-cd happios.dev
-
-# Installer les dépendances
 npm install
+```
 
-# Lancer en développement
+### Développement
+
+```bash
 npm start
 ```
 
-Le site sera disponible sur http://localhost:3000
-
-### Déploiement sur GitHub Pages
+### Déploiement
 
 ```bash
-# Build et déploiement
 npm run deploy
 ```
 
-Le site sera publié sur https://happios.dev
+## 🎨 Palette de couleurs
 
-### Mise à jour
+### Utilisation dans le code
 
-```bash
-# Modifier le code
-# Committer les changements
-git add .
-git commit -m "Update: description"
-git push origin main
+```jsx
+// Couleurs directes
+<div className="bg-alabaster text-onyx">
+  <button className="bg-juniper text-alabaster">Click</button>
+</div>
 
-# Déployer
-npm run deploy
+// Dark mode automatique avec variant dark:
+<div className="bg-alabaster dark:bg-onyx">
+  <p className="text-onyx dark:text-alabaster">Texte</p>
+</div>
 ```
 
-Voir [GUIDE_MISE_A_JOUR.md](./GUIDE_MISE_A_JOUR.md) pour plus de détails.
+### Light Mode
+- Background : `bg-alabaster` (#EEECE6)
+- Cards : `bg-silken` (#D9D1C4)
+- Accent : `bg-juniper` (#44554E)
+- Text : `text-onyx` (#222222)
 
-## 📂 Structure du projet
-
-```
-happios.dev/
-├── public/
-│   ├── CNAME              # Domaine personnalisé
-│   └── index.html         # Page HTML
-├── src/
-│   ├── IOSSecurityDemo.jsx  # Composant principal
-│   ├── App.js               # Application React
-│   ├── index.js             # Point d'entrée
-│   ├── styles.css           # Design system
-│   └── index.css            # Overrides & utilities
-├── package.json
-├── README.md
-├── PALETTE_DOCUMENTATION.md
-└── GUIDE_MISE_A_JOUR.md
-```
-
-## 🎯 Fonctionnalités techniques
-
-### Dark mode
-
-Le dark mode s'active automatiquement selon les préférences système :
-
-```css
-@media (prefers-color-scheme: dark) {
-  /* Ajustements automatiques */
-}
-```
-
-### Variables CSS
-
-Le design system utilise des variables CSS pour faciliter la personnalisation :
-
-```css
-:root {
-  --bg-primary: var(--color-alabaster);
-  --text-primary: var(--color-onyx);
-  --accent-primary: var(--color-juniper);
-}
-```
-
-### Classes utilitaires
-
-```css
-.card          /* Card avec ombre */
-.btn-primary   /* Bouton principal */
-.badge-success /* Badge de succès */
-.tab           /* Onglet */
-```
+### Dark Mode
+- Background : `bg-onyx` (#222222)
+- Cards : `bg-juniper` (#44554E)
+- Accent : `bg-moss` (#A3AE98)
+- Text : `text-alabaster` (#EEECE6)
 
 ## 🔧 Personnalisation
 
-### Modifier les couleurs
+### Changer une couleur
 
-Édite `src/styles.css` :
+Édite `public/index.html`, section `tailwind.config` :
 
-```css
-:root {
-  --color-alabaster: #EEECE6;  /* Ta couleur ici */
-  --color-juniper: #44554E;
-  /* etc. */
+```javascript
+colors: {
+  juniper: '#44554E',  // Change cette valeur
 }
 ```
 
-### Ajouter des composants
+### Ajouter une couleur
 
-Ajoute tes styles dans `src/styles.css` :
-
-```css
-.mon-composant {
-  background-color: var(--bg-secondary);
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
+```javascript
+colors: {
+  alabaster: '#EEECE6',
+  // ... autres couleurs
+  mauve: '#9B7EBD',  // Nouvelle couleur
 }
 ```
 
-## 📱 Responsive
+Puis utilise : `bg-mauve`, `text-mauve`, etc.
 
-Le site est optimisé pour tous les écrans :
+### Modifier les overrides
 
-- 📱 Mobile : 320px+
-- 📱 Tablet : 768px+
-- 💻 Desktop : 1024px+
+Édite la section `<style type="text/tailwindcss">` dans `public/index.html` :
+
+```css
+.bg-blue-600 {
+  @apply bg-juniper dark:bg-moss;
+}
+```
+
+## 📱 Dark Mode
+
+Le dark mode utilise `prefers-color-scheme` :
+
+- **macOS** : Préférences Système > Apparence > Sombre
+- **iOS** : Réglages > Luminosité > Sombre
+- **Windows** : Paramètres > Personnalisation > Sombre
+
+Pour forcer le dark mode en dev, utilise les DevTools du navigateur.
 
 ## 🌐 URLs
 
@@ -181,36 +150,68 @@ Le site est optimisé pour tous les écrans :
 ## 📊 Technologies
 
 - React 18
+- Tailwind CSS (via CDN)
 - Lucide React (icônes)
-- CSS Custom (design system)
-- GitHub Pages (hébergement)
-- Cloudflare (DNS & SSL)
+- GitHub Pages
+- Cloudflare (DNS)
 
-## 🤝 Contribution
+## 📝 Structure
 
-Les contributions sont les bienvenues ! Pour proposer des modifications :
+```
+happios.dev/
+├── public/
+│   ├── CNAME              # Domaine custom
+│   └── index.html         # Config Tailwind + overrides
+├── src/
+│   ├── IOSSecurityDemo.jsx
+│   ├── App.js
+│   ├── index.js
+│   └── index.css          # Minimal
+└── package.json
+```
 
-1. Fork le projet
-2. Crée une branche (`git checkout -b feature/amelioration`)
-3. Commit tes changements (`git commit -m 'Add: nouvelle fonctionnalité'`)
-4. Push sur la branche (`git push origin feature/amelioration`)
-5. Ouvre une Pull Request
+## 💡 Tips
 
-## 📝 License
+### Utiliser les couleurs custom
 
-Ce projet est sous licence MIT.
+```jsx
+// Au lieu de
+<div className="bg-blue-500">
 
-## 👨‍💻 Auteur
+// Utilise
+<div className="bg-juniper">
 
-**hoseiocean**
-- GitHub: [@hoseiocean](https://github.com/hoseiocean)
-- Site: [happios.dev](https://happios.dev)
+// Avec dark mode
+<div className="bg-juniper dark:bg-moss">
+```
 
-## 🙏 Remerciements
+### Classes Tailwind complètes disponibles
 
-- Inspiration de design : Palette naturelle terre & forêt
-- Icônes : Lucide React
-- Hébergement : GitHub Pages
+Toutes les classes Tailwind standard fonctionnent :
+- Layout : `flex`, `grid`, `container`
+- Spacing : `p-4`, `m-2`, `space-y-4`
+- Typography : `text-xl`, `font-bold`
+- Responsive : `md:flex`, `lg:grid`
+- States : `hover:opacity-80`, `focus:ring-2`
+
+## ✅ Checklist déploiement
+
+- [ ] `npm install`
+- [ ] Tester en local : `npm start`
+- [ ] Vérifier les couleurs (light + dark)
+- [ ] Déployer : `npm run deploy`
+- [ ] Attendre 5 minutes
+- [ ] Vérifier https://happios.dev
+- [ ] Tester dark mode
+- [ ] Vérifier sur mobile
+
+## 🎉 C'est tout !
+
+Ton site a maintenant :
+- 🎨 Tailwind CSS complet via CDN
+- 🌿 Ta palette custom intégrée
+- 🌓 Dark mode automatique
+- ⚡ Performance optimale
 
 ---
 
