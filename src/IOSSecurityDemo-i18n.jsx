@@ -71,121 +71,121 @@ const IOSSecurityDemo = () => {
     const securityLayers = [
       {
         id: 'secureboot',
-        name: 'Secure Boot',
-        shortName: 'Boot',
-        level: 'Matériel/Firmware',
+        name: t('securityLayers.secureboot.name'),
+        shortName: t('securityLayers.secureboot.shortName'),
+        level: t('securityLayers.secureboot.level'),
         category: 'hardware',
         color: 'green',
         icon: '🔐',
-        description: 'Chaîne de confiance au démarrage',
-        details: 'Vérifie chaque composant du démarrage (Boot ROM → iBoot → Kernel) avec des signatures cryptographiques. Empêche le chargement de firmware ou OS modifiés.',
-        protects: 'Bootkits, rootkits firmware, OS compromis'
+        description: t('securityLayers.secureboot.description'),
+        details: t('securityLayers.secureboot.details'),
+        protects: t('securityLayers.secureboot.protects')
       },
       {
         id: 'secureenclave',
-        name: 'Secure Enclave',
-        shortName: 'SEP',
-        level: 'Matériel',
+        name: t('securityLayers.secureenclave.name'),
+        shortName: t('securityLayers.secureenclave.shortName'),
+        level: t('securityLayers.secureenclave.level'),
         category: 'hardware',
         color: 'purple',
         icon: '🔒',
-        description: 'Processeur dédié à la sécurité',
-        details: 'Coprocesseur isolé avec son propre OS et mémoire chiffrée. Gère les clés de chiffrement, Face ID/Touch ID, et ne partage jamais les secrets avec le processeur principal.',
-        protects: 'Vol de clés cryptographiques, contournement biométrique'
+        description: t('securityLayers.secureenclave.description'),
+        details: t('securityLayers.secureenclave.details'),
+        protects: t('securityLayers.secureenclave.protects')
       },
       {
         id: 'dataprotection',
-        name: 'Data Protection',
-        shortName: 'DP',
-        level: 'Système de fichiers',
+        name: t('securityLayers.dataprotection.name'),
+        shortName: t('securityLayers.dataprotection.shortName'),
+        level: t('securityLayers.dataprotection.level'),
         category: 'data',
         color: 'blue',
         icon: '🗂️',
-        description: 'Chiffrement des fichiers par classe',
-        details: 'Chaque fichier a sa propre clé AES-256. Les classes de protection déterminent quand les fichiers sont accessibles (appareil verrouillé, déverrouillé, etc.).',
-        protects: 'Vol de données si appareil éteint/verrouillé'
+        description: t('securityLayers.dataprotection.description'),
+        details: t('securityLayers.dataprotection.details'),
+        protects: t('securityLayers.dataprotection.protects')
       },
       {
         id: 'codesigning',
-        name: 'Code Signing',
-        shortName: 'Sign',
-        level: 'Application',
+        name: t('securityLayers.codesigning.name'),
+        shortName: t('securityLayers.codesigning.shortName'),
+        level: t('securityLayers.codesigning.level'),
         category: 'code',
         color: 'indigo',
         icon: '✍️',
-        description: 'Signature cryptographique du code',
-        details: 'Tout code exécutable doit être signé par Apple ou un développeur approuvé. Garantit l\'authenticité et l\'intégrité de chaque application.',
-        protects: 'Applications non autorisées, code tiers malveillant'
+        description: t('securityLayers.codesigning.description'),
+        details: t('securityLayers.codesigning.details'),
+        protects: t('securityLayers.codesigning.protects')
       },
       {
         id: 'amfi',
-        name: 'AMFI',
-        shortName: 'AMFI',
-        level: 'Noyau',
+        name: t('securityLayers.amfi.name'),
+        shortName: t('securityLayers.amfi.shortName'),
+        level: t('securityLayers.amfi.level'),
         category: 'code',
         color: 'indigo',
         icon: '🛡️',
-        description: 'Vérification d\'intégrité en temps réel',
-        details: 'Apple Mobile File Integrity vérifie les signatures à l\'exécution via le kernel. Bloque immédiatement tout code modifié ou non signé.',
-        protects: 'Injection de code, modification de binaires'
+        description: t('securityLayers.amfi.description'),
+        details: t('securityLayers.amfi.details'),
+        protects: t('securityLayers.amfi.protects')
       },
       {
         id: 'sandbox',
-        name: 'Sandbox',
-        shortName: 'SB',
-        level: 'Système/App',
+        name: t('securityLayers.sandbox.name'),
+        shortName: t('securityLayers.sandbox.shortName'),
+        level: t('securityLayers.sandbox.level'),
         category: 'isolation',
         color: 'green',
         icon: '📦',
-        description: 'Isolation des applications',
-        details: 'Chaque app s\'exécute dans son propre conteneur isolé avec des permissions limitées. Doit demander explicitement l\'accès aux ressources système.',
-        protects: 'Accès non autorisé aux données, espionnage inter-apps'
+        description: t('securityLayers.sandbox.description'),
+        details: t('securityLayers.sandbox.details'),
+        protects: t('securityLayers.sandbox.protects')
       },
       {
         id: 'aslr',
-        name: 'ASLR',
-        shortName: 'ASLR',
-        level: 'Mémoire',
+        name: t('securityLayers.aslr.name'),
+        shortName: t('securityLayers.aslr.shortName'),
+        level: t('securityLayers.aslr.level'),
         category: 'memory',
         color: 'purple',
         icon: '🎲',
-        description: 'Randomisation des adresses mémoire',
-        details: 'Address Space Layout Randomization place le code et les données à des adresses aléatoires à chaque exécution. Rend les exploits mémoire imprévisibles.',
-        protects: 'Buffer overflow, ROP attacks, exploits mémoire'
+        description: t('securityLayers.aslr.description'),
+        details: t('securityLayers.aslr.details'),
+        protects: t('securityLayers.aslr.protects')
       },
       {
         id: 'xn',
-        name: 'XN Bit',
-        shortName: 'XN',
-        level: 'Processeur',
+        name: t('securityLayers.xn.name'),
+        shortName: t('securityLayers.xn.shortName'),
+        level: t('securityLayers.xn.level'),
         category: 'memory',
         color: 'orange',
         icon: '⛔',
-        description: 'Protection de la mémoire exécutable',
-        details: 'Execute Never marque les zones de données comme non-exécutables au niveau CPU. Même si du code est injecté, il ne peut pas s\'exécuter.',
-        protects: 'Exécution de shellcode, injection de code'
+        description: t('securityLayers.xn.description'),
+        details: t('securityLayers.xn.details'),
+        protects: t('securityLayers.xn.protects')
       },
       {
         id: 'ats',
-        name: 'ATS',
-        shortName: 'ATS',
-        level: 'Réseau',
+        name: t('securityLayers.ats.name'),
+        shortName: t('securityLayers.ats.shortName'),
+        level: t('securityLayers.ats.level'),
         category: 'network',
         color: 'blue',
         icon: '🌐',
-        description: 'Sécurité du transport réseau',
-        details: 'App Transport Security force l\'utilisation de HTTPS avec TLS 1.2+ et certificats valides. Protège les communications réseau des apps.',
-        protects: 'Interception réseau, MITM, downgrade TLS'
+        description: t('securityLayers.ats.description'),
+        details: t('securityLayers.ats.details'),
+        protects: t('securityLayers.ats.protects')
       }
     ];
 
     const categories = [
-      { id: 'hardware', name: 'Matériel', color: 'from-amber-100 to-orange-100', border: 'border-amber-300' },
-      { id: 'data', name: 'Données', color: 'from-blue-100 to-cyan-100', border: 'border-blue-300' },
-      { id: 'code', name: 'Code', color: 'from-indigo-100 to-purple-100', border: 'border-indigo-300' },
-      { id: 'isolation', name: 'Isolation', color: 'from-green-100 to-emerald-100', border: 'border-green-300' },
-      { id: 'memory', name: 'Mémoire', color: 'from-purple-100 to-pink-100', border: 'border-purple-300' },
-      { id: 'network', name: 'Réseau', color: 'from-sky-100 to-blue-100', border: 'border-sky-300' }
+      { id: 'hardware', name: t('categories.hardware'), color: 'from-amber-100 to-orange-100', border: 'border-amber-300' },
+      { id: 'data', name: t('categories.data'), color: 'from-blue-100 to-cyan-100', border: 'border-blue-300' },
+      { id: 'code', name: t('categories.code'), color: 'from-indigo-100 to-purple-100', border: 'border-indigo-300' },
+      { id: 'isolation', name: t('categories.isolation'), color: 'from-green-100 to-emerald-100', border: 'border-green-300' },
+      { id: 'memory', name: t('categories.memory'), color: 'from-purple-100 to-pink-100', border: 'border-purple-300' },
+      { id: 'network', name: t('categories.network'), color: 'from-sky-100 to-blue-100', border: 'border-sky-300' }
     ];
 
     const getLayerStyles = (layer, isSelected) => {
@@ -233,17 +233,14 @@ const IOSSecurityDemo = () => {
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-300 rounded-lg p-6">
           <h3 className="font-bold text-xl mb-3 flex items-center gap-2">
             <Layers className="w-6 h-6 text-blue-600" />
-            Défense en Profondeur (Defense in Depth)
+            {t('overview.title')}
           </h3>
-          <p className="text-sm text-gray-700">
-            iOS implémente <strong>9 mécanismes de sécurité</strong> complémentaires, du matériel jusqu'au réseau. 
-            Chaque couche protège contre des menaces spécifiques. Cliquez sur un mécanisme pour en savoir plus.
-          </p>
+          <p className="text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: t('overview.description') }} />
         </div>
 
         {/* Architecture visuelle en couches */}
         <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-semibold mb-4 text-center text-gray-700">Architecture de Sécurité iOS</h4>
+          <h4 className="font-semibold mb-4 text-center text-gray-700">{t('overview.architectureTitle')}</h4>
           
           <div className="space-y-3">
             {categories.map(category => {
@@ -283,7 +280,7 @@ const IOSSecurityDemo = () => {
                 </div>
                 <p className="text-sm text-gray-700 mb-3">{selectedLayerData.details}</p>
                 <div className="bg-white border border-gray-200 rounded p-3">
-                  <div className="text-xs font-semibold text-gray-500 uppercase mb-1">Protège contre</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase mb-1">{t('overview.protectsAgainst')}</div>
                   <div className="text-sm text-gray-800">{selectedLayerData.protects}</div>
                 </div>
               </div>
@@ -293,14 +290,14 @@ const IOSSecurityDemo = () => {
 
         {/* Tableau récapitulatif complet */}
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-3">Récapitulatif des 9 mécanismes de sécurité</h4>
+          <h4 className="font-semibold mb-3">{t('overview.summaryTitle')}</h4>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b-2 border-gray-300">
-                  <th className="text-left py-2 px-2">Mécanisme</th>
-                  <th className="text-left py-2 px-2">Niveau</th>
-                  <th className="text-left py-2 px-2">Rôle principal</th>
+                  <th className="text-left py-2 px-2">{t('overview.tableHeaders.mechanism')}</th>
+                  <th className="text-left py-2 px-2">{t('overview.tableHeaders.level')}</th>
+                  <th className="text-left py-2 px-2">{t('overview.tableHeaders.mainRole')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -329,22 +326,21 @@ const IOSSecurityDemo = () => {
         <div className="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-200 rounded-lg p-4">
           <h4 className="font-semibold mb-3 flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-red-600" />
-            Comment ces protections travaillent ensemble
+            {t('overview.attackFlowTitle')}
           </h4>
           <div className="text-sm text-gray-700 space-y-2">
-            <p>Pour compromettre un iPhone, un attaquant devrait:</p>
+            <p>{t('overview.attackFlowIntro')}</p>
             <ol className="list-decimal list-inside space-y-1 ml-2">
-              <li><strong>Secure Boot</strong> → Remplacer le firmware/OS (impossible sans clé Apple)</li>
-              <li><strong>Code Signing + AMFI</strong> → Faire exécuter du code non signé</li>
-              <li><strong>Sandbox</strong> → S'échapper de l'isolation pour accéder aux données</li>
-              <li><strong>Data Protection</strong> → Déchiffrer les fichiers protégés</li>
-              <li><strong>Secure Enclave</strong> → Extraire les clés cryptographiques</li>
-              <li><strong>ASLR + XN</strong> → Exploiter la mémoire malgré la randomisation</li>
-              <li><strong>ATS</strong> → Intercepter le trafic réseau chiffré</li>
+              <li dangerouslySetInnerHTML={{ __html: t('overview.attackSteps.step1') }} />
+              <li dangerouslySetInnerHTML={{ __html: t('overview.attackSteps.step2') }} />
+              <li dangerouslySetInnerHTML={{ __html: t('overview.attackSteps.step3') }} />
+              <li dangerouslySetInnerHTML={{ __html: t('overview.attackSteps.step4') }} />
+              <li dangerouslySetInnerHTML={{ __html: t('overview.attackSteps.step5') }} />
+              <li dangerouslySetInnerHTML={{ __html: t('overview.attackSteps.step6') }} />
+              <li dangerouslySetInnerHTML={{ __html: t('overview.attackSteps.step7') }} />
             </ol>
             <p className="mt-3 font-semibold text-red-700">
-              Contourner toutes ces protections simultanément est extrêmement difficile, 
-              ce qui explique pourquoi les exploits iOS complets valent des millions de dollars.
+              {t('overview.attackFlowConclusion')}
             </p>
           </div>
         </div>
@@ -357,17 +353,17 @@ const IOSSecurityDemo = () => {
     const [selectedFile, setSelectedFile] = useState('legitimate');
     
     const steps = [
-      { title: "App légitime", desc: "Application signée par Apple/développeur approuvé" },
-      { title: "Vérification AMFI", desc: "AMFI vérifie la signature cryptographique" },
-      { title: "Signature valide", desc: "Le code est authentique et non modifié" },
-      { title: "Exécution autorisée", desc: "L'app peut s'exécuter normalement" }
+      { title: t('amfiTab.steps.legitimate.step1.title'), desc: t('amfiTab.steps.legitimate.step1.desc') },
+      { title: t('amfiTab.steps.legitimate.step2.title'), desc: t('amfiTab.steps.legitimate.step2.desc') },
+      { title: t('amfiTab.steps.legitimate.step3.title'), desc: t('amfiTab.steps.legitimate.step3.desc') },
+      { title: t('amfiTab.steps.legitimate.step4.title'), desc: t('amfiTab.steps.legitimate.step4.desc') }
     ];
 
     const maliciousSteps = [
-      { title: "App modifiée", desc: "Binaire modifié ou non signé détecté" },
-      { title: "Vérification AMFI", desc: "AMFI vérifie la signature cryptographique" },
-      { title: "Signature invalide", desc: "Le hash ne correspond pas ou signature manquante" },
-      { title: "Exécution refusée", desc: "AMFI bloque le lancement - Protection active" }
+      { title: t('amfiTab.steps.malicious.step1.title'), desc: t('amfiTab.steps.malicious.step1.desc') },
+      { title: t('amfiTab.steps.malicious.step2.title'), desc: t('amfiTab.steps.malicious.step2.desc') },
+      { title: t('amfiTab.steps.malicious.step3.title'), desc: t('amfiTab.steps.malicious.step3.desc') },
+      { title: t('amfiTab.steps.malicious.step4.title'), desc: t('amfiTab.steps.malicious.step4.desc') }
     ];
 
     const currentSteps = selectedFile === 'legitimate' ? steps : maliciousSteps;
@@ -377,17 +373,16 @@ const IOSSecurityDemo = () => {
         <div className="bg-indigo-50 border-2 border-indigo-200 rounded-lg p-6">
           <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
             <Shield className="w-5 h-5 text-indigo-600" />
-            AMFI - Apple Mobile File Integrity
+            {t('amfiTab.title')}
           </h3>
           <p className="text-sm mb-3">
-            AMFI garantit que seul du code signé et approuvé peut s'exécuter sur iOS. 
-            Il vérifie l'intégrité et l'authenticité de chaque exécutable avant son lancement.
+            {t('amfiTab.description')}
           </p>
           <div className="text-sm bg-white border border-indigo-200 rounded p-3">
-            <p className="font-semibold mb-2">Composants d'AMFI:</p>
+            <p className="font-semibold mb-2">{t('amfiTab.components')}</p>
             <ul className="space-y-1 text-gray-700">
-              <li>• <code className="bg-gray-100 px-1">AppleMobileFileIntegrity.kext</code> - Extension noyau</li>
-              <li>• <code className="bg-gray-100 px-1">amfid</code> - Daemon en espace utilisateur</li>
+              <li>• <code className="bg-gray-100 px-1">AppleMobileFileIntegrity.kext</code> - {t('amfiTab.kernelExt')}</li>
+              <li>• <code className="bg-gray-100 px-1">amfid</code> - {t('amfiTab.userDaemon')}</li>
             </ul>
           </div>
         </div>
@@ -402,8 +397,8 @@ const IOSSecurityDemo = () => {
             }`}
           >
             <div className="text-3xl mb-2">✅</div>
-            <div className="font-semibold">App Légitime</div>
-            <div className="text-xs text-gray-600 mt-1">Signée par Apple/Développeur</div>
+            <div className="font-semibold">{t('amfiTab.legitimateApp')}</div>
+            <div className="text-xs text-gray-600 mt-1">{t('amfiTab.legitimateAppDesc')}</div>
           </button>
 
           <button
@@ -415,8 +410,8 @@ const IOSSecurityDemo = () => {
             }`}
           >
             <div className="text-3xl mb-2">⚠️</div>
-            <div className="font-semibold">App Modifiée</div>
-            <div className="text-xs text-gray-600 mt-1">Non signée ou altérée</div>
+            <div className="font-semibold">{t('amfiTab.modifiedApp')}</div>
+            <div className="text-xs text-gray-600 mt-1">{t('amfiTab.modifiedAppDesc')}</div>
           </button>
         </div>
 
@@ -451,7 +446,7 @@ const IOSSecurityDemo = () => {
                 : 'border-red-300 bg-red-50'
             }`}>
               <div className="flex items-center justify-between mb-2">
-                <div className="font-semibold">Fichier Exécutable</div>
+                <div className="font-semibold">{t('amfiTab.executableFile')}</div>
                 {selectedFile === 'legitimate' ? (
                   <CheckCircle className="w-5 h-5 text-green-600" />
                 ) : (
@@ -478,7 +473,7 @@ const IOSSecurityDemo = () => {
               <div className="p-4 rounded-lg border-2 border-indigo-300 bg-indigo-50">
                 <div className="font-semibold mb-2 flex items-center gap-2">
                   <Shield className="w-5 h-5 text-indigo-600" />
-                  Vérification AMFI
+                  {t('amfiTab.verificationTitle')}
                 </div>
                 <div className="text-xs space-y-1">
                   <div>1. Lecture de la signature cryptographique</div>
@@ -505,12 +500,12 @@ const IOSSecurityDemo = () => {
                   {selectedFile === 'legitimate' ? (
                     <>
                       <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="font-semibold text-green-800">Signature Valide</span>
+                      <span className="font-semibold text-green-800">{t('amfiTab.validSignature')}</span>
                     </>
                   ) : (
                     <>
                       <XCircle className="w-5 h-5 text-red-600" />
-                      <span className="font-semibold text-red-800">Signature Invalide</span>
+                      <span className="font-semibold text-red-800">{t('amfiTab.invalidSignature')}</span>
                     </>
                   )}
                 </div>
@@ -538,12 +533,12 @@ const IOSSecurityDemo = () => {
                   {selectedFile === 'legitimate' ? (
                     <>
                       <CheckCircle className="w-6 h-6 text-blue-600" />
-                      <span className="font-bold text-blue-800">Exécution Autorisée</span>
+                      <span className="font-bold text-blue-800">{t('amfiTab.executionAllowed')}</span>
                     </>
                   ) : (
                     <>
                       <XCircle className="w-6 h-6 text-red-600" />
-                      <span className="font-bold text-red-800">Exécution Refusée</span>
+                      <span className="font-bold text-red-800">{t('amfiTab.executionDenied')}</span>
                     </>
                   )}
                 </div>
@@ -558,7 +553,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-3 text-sm">Comment AMFI protège iOS:</h4>
+          <h4 className="font-semibold mb-3 text-sm">{t('amfiTab.howProtects')}</h4>
           <div className="space-y-2 text-sm text-gray-700">
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -692,7 +687,7 @@ const IOSSecurityDemo = () => {
             }`}
           >
             <div className="text-3xl mb-2">✅</div>
-            <div className="font-semibold">Boot Normal</div>
+            <div className="font-semibold">{t('secureBootTab.normalBoot')}</div>
             <div className="text-xs text-gray-600 mt-1">Tous les composants signés par Apple</div>
           </button>
 
@@ -705,7 +700,7 @@ const IOSSecurityDemo = () => {
             }`}
           >
             <div className="text-3xl mb-2">⚠️</div>
-            <div className="font-semibold">Boot Compromis</div>
+            <div className="font-semibold">{t('secureBootTab.compromisedBoot')}</div>
             <div className="text-xs text-gray-600 mt-1">Bootloader modifié détecté</div>
           </button>
         </div>
@@ -808,7 +803,7 @@ const IOSSecurityDemo = () => {
               <div className="flex items-start gap-3">
                 <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
                 <div>
-                  <div className="font-bold text-red-800 mb-2">Boot Bloqué - Mode Récupération</div>
+                  <div className="font-bold text-red-800 mb-2">{t('secureBootTab.bootBlockedTitle')}</div>
                   <div className="text-sm text-gray-700">
                     Le Secure Boot a détecté un composant modifié et a immédiatement arrêté le processus. 
                     L'appareil ne peut pas démarrer et affiche un écran de récupération. Il faut restaurer 
@@ -824,7 +819,7 @@ const IOSSecurityDemo = () => {
               <div className="flex items-start gap-3">
                 <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
                 <div>
-                  <div className="font-bold text-green-800 mb-2">Boot Réussi !</div>
+                  <div className="font-bold text-green-800 mb-2">{t('secureBootTab.bootSuccessTitle')}</div>
                   <div className="text-sm text-gray-700">
                     Toutes les étapes ont été vérifiées avec succès. iOS démarre sur une base 
                     de confiance totale - chaque composant a été authentifié cryptographiquement.
@@ -1730,12 +1725,12 @@ const IOSSecurityDemo = () => {
                       {operation === 'success' ? (
                         <>
                           <CheckCircle className="w-5 h-5 text-green-600" />
-                          <span className="font-semibold text-green-800">Authentification Réussie</span>
+                          <span className="font-semibold text-green-800">{t('secureEnclaveTab.authSuccess')}</span>
                         </>
                       ) : (
                         <>
                           <XCircle className="w-5 h-5 text-red-600" />
-                          <span className="font-semibold text-red-800">Authentification Échouée</span>
+                          <span className="font-semibold text-red-800">{t('secureEnclaveTab.authFailed')}</span>
                         </>
                       )}
                     </div>
@@ -2118,7 +2113,7 @@ const IOSSecurityDemo = () => {
       <div className="font-mono text-lg">{address}</div>
       {prevAddress && showComparison && (
         <div className="mt-2 text-sm opacity-60">
-          <span>Précédent: {prevAddress}</span>
+          <span>{t('aslrTab.previous')} {prevAddress}</span>
           {address !== prevAddress && (
             <CheckCircle className="inline ml-2 w-4 h-4 text-green-500" />
           )}
@@ -2290,7 +2285,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Secure Boot
+              {t('tabs.secureboot')}
             </button>
             <button
               onClick={() => setActiveTab('secureenclave')}
@@ -2300,7 +2295,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Secure Enclave
+              {t('tabs.secureenclave')}
             </button>
             <button
               onClick={() => setActiveTab('dataprotection')}
@@ -2310,7 +2305,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Data Protection
+              {t('tabs.dataprotection')}
             </button>
             <button
               onClick={() => setActiveTab('codesigning')}
@@ -2320,7 +2315,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Code Signing
+              {t('tabs.codesigning')}
             </button>
             <button
               onClick={() => setActiveTab('amfi')}
@@ -2330,7 +2325,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              AMFI
+              {t('tabs.amfi')}
             </button>
             <button
               onClick={() => setActiveTab('sandbox')}
@@ -2340,7 +2335,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Sandbox
+              {t('tabs.sandbox')}
             </button>
             <button
               onClick={() => setActiveTab('aslr')}
@@ -2350,7 +2345,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              ASLR
+              {t('tabs.aslr')}
             </button>
             <button
               onClick={() => setActiveTab('xn')}
@@ -2360,7 +2355,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              XN Bit
+              {t('tabs.xn')}
             </button>
             <button
               onClick={() => setActiveTab('ats')}
@@ -2370,7 +2365,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              ATS
+              {t('tabs.ats')}
             </button>
           </div>
 
@@ -2393,12 +2388,10 @@ const IOSSecurityDemo = () => {
               <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-6">
                 <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
                   <RefreshCw className="w-5 h-5 text-purple-600" />
-                  ASLR - Address Space Layout Randomization
+                  {t('aslrTab.title')}
                 </h3>
                 <p className="text-sm text-gray-700">
-                  L'ASLR randomise les adresses mémoire à chaque exécution du programme. 
-                  Cliquez sur "Nouvelle exécution" pour simuler un redémarrage et observer 
-                  comment les adresses changent à chaque fois.
+                  {t('aslrTab.description')}
                 </p>
               </div>
 
@@ -2407,30 +2400,30 @@ const IOSSecurityDemo = () => {
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-all"
               >
                 <RefreshCw className="w-5 h-5" />
-                Nouvelle exécution (simuler un redémarrage)
+                {t('aslrTab.newExecution')}
               </button>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <MemoryBlock
-                  label="Stack (Variables locales)"
+                  label={t('aslrTab.stack')}
                   address={addresses.stack}
                   prevAddress={previousAddresses?.stack}
                   color="border-purple-300 bg-purple-50"
                 />
                 <MemoryBlock
-                  label="Heap (Allocation dynamique)"
+                  label={t('aslrTab.heap')}
                   address={addresses.heap}
                   prevAddress={previousAddresses?.heap}
                   color="border-green-300 bg-green-50"
                 />
                 <MemoryBlock
-                  label="Code (Instructions du programme)"
+                  label={t('aslrTab.code')}
                   address={addresses.code}
                   prevAddress={previousAddresses?.code}
                   color="border-blue-300 bg-blue-50"
                 />
                 <MemoryBlock
-                  label="Bibliothèques système"
+                  label={t('aslrTab.libraries')}
                   address={addresses.library}
                   prevAddress={previousAddresses?.library}
                   color="border-orange-300 bg-orange-50"
@@ -2442,10 +2435,9 @@ const IOSSecurityDemo = () => {
                   <div className="flex items-start gap-2">
                     <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-green-800 mb-1">Protection active!</p>
+                      <p className="font-semibold text-green-800 mb-1">{t('aslrTab.protectionActive')}</p>
                       <p className="text-sm text-gray-700">
-                        Toutes les adresses ont changé. Un attaquant ne peut pas prédire où se trouvent 
-                        les fonctions ou les données en mémoire, rendant l'exploitation beaucoup plus difficile.
+                        {t('aslrTab.protectionActiveDesc')}
                       </p>
                     </div>
                   </div>
@@ -2453,12 +2445,12 @@ const IOSSecurityDemo = () => {
               )}
 
               <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-                <h4 className="font-semibold mb-2 text-sm">Pourquoi c'est important:</h4>
+                <h4 className="font-semibold mb-2 text-sm">{t('aslrTab.whyImportantTitle')}</h4>
                 <ul className="space-y-2 text-sm text-gray-700">
-                  <li>• Sans ASLR, les adresses seraient toujours identiques</li>
-                  <li>• Les attaquants pourraient prédire où attaquer en mémoire</li>
-                  <li>• Avec ASLR, chaque exécution a une disposition mémoire unique</li>
-                  <li>• Les exploits basés sur des adresses fixes deviennent impossibles</li>
+                  <li>• {t('aslrTab.whyImportant1')}</li>
+                  <li>• {t('aslrTab.whyImportant2')}</li>
+                  <li>• {t('aslrTab.whyImportant3')}</li>
+                  <li>• {t('aslrTab.whyImportant4')}</li>
                 </ul>
               </div>
             </div>
