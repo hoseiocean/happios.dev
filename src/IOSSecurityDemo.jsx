@@ -1,5 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Shield, AlertTriangle, CheckCircle, XCircle, Lock, Layers } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { RefreshCw, Shield, AlertTriangle, CheckCircle, Globe, XCircle, Lock, Layers } from 'lucide-react';
+
+const LanguageSelector = () => {
+  const { i18n } = useTranslation();
+  
+  const languages = [
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'es', name: 'Español', flag: '🇪🇸' },
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪' }
+  ];
+
+  const currentLang = i18n.language?.substring(0, 2) || 'fr';
+
+  return (
+    <div className="flex items-center gap-2">
+      <Globe className="w-4 h-4 text-gray-500" />
+      <select
+        value={currentLang}
+        onChange={(e) => i18n.changeLanguage(e.target.value)}
+        className="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+      >
+        {languages.map((lang) => (
+          <option key={lang.code} value={lang.code}>
+            {lang.flag} {lang.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
 
 const IOSSecurityDemo = () => {
   const [addresses, setAddresses] = useState({
@@ -11,6 +42,8 @@ const IOSSecurityDemo = () => {
   const [showComparison, setShowComparison] = useState(false);
   const [previousAddresses, setPreviousAddresses] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
+  const { t } = useTranslation();
+
 
   const generateRandomAddresses = () => {
     const randomOffset = () => Math.floor(Math.random() * 0xFFFFFF);
@@ -2228,14 +2261,16 @@ const IOSSecurityDemo = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-8">
       <div className="max-w-5xl mx-auto">
         <div className="bg-white rounded-xl shadow-lg p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <Shield className="w-8 h-8 text-blue-600" />
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800">Sécurité iOS</h1>
-              <p className="text-gray-600">Architecture de défense en profondeur</p>
-            </div>
-          </div>
-
+<div className="flex items-center justify-between mb-6 flex-wrap gap-4">
+  <div className="flex items-center gap-3">
+    <Shield className="w-8 h-8 text-blue-600" />
+    <div>
+      <h1 className="text-3xl font-bold text-gray-800">{t('header.title')}</h1>
+      <p className="text-gray-600">{t('header.subtitle')}</p>
+    </div>
+  </div>
+  <LanguageSelector />
+</div>
           <div className="flex gap-2 mb-6 border-b-2 overflow-x-auto">
             <button
               onClick={() => setActiveTab('overview')}
@@ -2245,7 +2280,7 @@ const IOSSecurityDemo = () => {
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Vue d'ensemble
+              {t('tabs.overview')}
             </button>
             <button
               onClick={() => setActiveTab('secureboot')}
@@ -2435,7 +2470,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         <div className="mt-6 text-center text-sm text-gray-600">
-          <p>Démonstration interactive de l'architecture de sécurité iOS</p>
+          <p>{t('footer.demo')}</p>
         </div>
       </div>
     </div>

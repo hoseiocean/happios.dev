@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 Déploiement happios.dev avec Tailwind CDN"
+echo "🚀 Déploiement happios.dev"
 echo "============================================="
 
 if [ ! -f "package.json" ]; then
@@ -22,7 +22,7 @@ fi
 echo ""
 echo "💾 Sauvegarde sur main..."
 git add .
-git commit -m "Update: Tailwind CDN + Custom colors - $(date '+%Y-%m-%d %H:%M:%S')" || echo "Aucun changement"
+git commit -m "Update: I18N - $(date '+%Y-%m-%d %H:%M:%S')" || echo "Aucun changement"
 git push origin main
 echo "✅ Code poussé"
 
