@@ -1,5 +1,5 @@
 import React from 'react';
-import IOSSecurityDemo from './components/IOSSecurityDemo-i18n';
+import IOSSecurityDemo from './IOSSecurityDemo-i18n';
 import './i18n';
 
 function App() {
