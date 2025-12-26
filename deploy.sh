@@ -22,7 +22,7 @@ fi
 echo ""
 echo "💾 Sauvegarde sur main..."
 git add .
-git commit -m "Update: I18N - $(date '+%Y-%m-%d %H:%M:%S')" || echo "Aucun changement"
+git commit -m "Update: bg-white => bg-alabaster - $(date '+%Y-%m-%d %H:%M:%S')" || echo "Aucun changement"
 git push origin main
 echo "✅ Code poussé"
 

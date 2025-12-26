@@ -20,7 +20,7 @@ const LanguageSelector = () => {
       <select
         value={currentLang}
         onChange={(e) => i18n.changeLanguage(e.target.value)}
-        className="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+        className="bg-alabaster border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
       >
         {languages.map((lang) => (
           <option key={lang.code} value={lang.code}>
@@ -201,7 +201,7 @@ const IOSSecurityDemo = () => {
       if (isSelected) {
         return `${colors.bg} ${colors.border} ring-2 ${colors.ring}`;
       }
-      return 'bg-white border-gray-300 hover:border-gray-400';
+      return 'bg-alabaster border-gray-300 hover:border-gray-400';
     };
 
     const getDetailStyles = (color) => {
@@ -239,7 +239,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Architecture visuelle en couches */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-semibold mb-4 text-center text-gray-700">{t('overview.architectureTitle')}</h4>
           
           <div className="space-y-3">
@@ -279,7 +279,7 @@ const IOSSecurityDemo = () => {
                   </span>
                 </div>
                 <p className="text-sm text-gray-700 mb-3">{selectedLayerData.details}</p>
-                <div className="bg-white border border-gray-200 rounded p-3">
+                <div className="bg-alabaster border border-gray-200 rounded p-3">
                   <div className="text-xs font-semibold text-gray-500 uppercase mb-1">{t('overview.protectsAgainst')}</div>
                   <div className="text-sm text-gray-800">{selectedLayerData.protects}</div>
                 </div>
@@ -378,7 +378,7 @@ const IOSSecurityDemo = () => {
           <p className="text-sm mb-3">
             {t('amfiTab.description')}
           </p>
-          <div className="text-sm bg-white border border-indigo-200 rounded p-3">
+          <div className="text-sm bg-alabaster border border-indigo-200 rounded p-3">
             <p className="font-semibold mb-2">{t('amfiTab.components')}</p>
             <ul className="space-y-1 text-gray-700">
               <li>• <code className="bg-gray-100 px-1">AppleMobileFileIntegrity.kext</code> - {t('amfiTab.kernelExt')}</li>
@@ -393,7 +393,7 @@ const IOSSecurityDemo = () => {
             className={`p-4 rounded-lg border-2 transition-all ${
               selectedFile === 'legitimate'
                 ? 'border-green-500 bg-green-50 ring-4 ring-green-200'
-                : 'border-gray-300 bg-white hover:border-gray-400'
+                : 'border-gray-300 bg-alabaster hover:border-gray-400'
             }`}
           >
             <div className="text-3xl mb-2">✅</div>
@@ -406,7 +406,7 @@ const IOSSecurityDemo = () => {
             className={`p-4 rounded-lg border-2 transition-all ${
               selectedFile === 'malicious'
                 ? 'border-red-500 bg-red-50 ring-4 ring-red-200'
-                : 'border-gray-300 bg-white hover:border-gray-400'
+                : 'border-gray-300 bg-alabaster hover:border-gray-400'
             }`}
           >
             <div className="text-3xl mb-2">⚠️</div>
@@ -431,7 +431,7 @@ const IOSSecurityDemo = () => {
           ))}
         </div>
 
-        <div className={`bg-white border-2 rounded-lg p-6 ${
+        <div className={`bg-alabaster border-2 rounded-lg p-6 ${
           selectedFile === 'malicious' && verificationStep === 3 
             ? 'border-red-400' 
             : 'border-gray-300'
@@ -667,7 +667,7 @@ const IOSSecurityDemo = () => {
             sur l'appareil. Chaque étape vérifie cryptographiquement la suivante avant de lui passer 
             le contrôle, créant une chaîne de confiance ininterrompue.
           </p>
-          <div className="text-sm bg-white border border-green-200 rounded p-3">
+          <div className="text-sm bg-alabaster border border-green-200 rounded p-3">
             <p className="font-semibold mb-2">Principe fondamental:</p>
             <p className="text-gray-700 text-xs">
               La Boot ROM est la "racine de confiance" (Root of Trust) - elle est immuable et 
@@ -683,7 +683,7 @@ const IOSSecurityDemo = () => {
             className={`p-4 rounded-lg border-2 transition-all ${
               !tampered
                 ? 'border-green-500 bg-green-50 ring-4 ring-green-200'
-                : 'border-gray-300 bg-white hover:border-gray-400'
+                : 'border-gray-300 bg-alabaster hover:border-gray-400'
             }`}
           >
             <div className="text-3xl mb-2">✅</div>
@@ -696,7 +696,7 @@ const IOSSecurityDemo = () => {
             className={`p-4 rounded-lg border-2 transition-all ${
               tampered
                 ? 'border-red-500 bg-red-50 ring-4 ring-red-200'
-                : 'border-gray-300 bg-white hover:border-gray-400'
+                : 'border-gray-300 bg-alabaster hover:border-gray-400'
             }`}
           >
             <div className="text-3xl mb-2">⚠️</div>
@@ -723,7 +723,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Visualisation de la chaîne de boot */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Séquence de Démarrage</h4>
           
           <div className="space-y-3">
@@ -772,7 +772,7 @@ const IOSSecurityDemo = () => {
                     <div className={`text-sm mt-2 p-2 rounded ${
                       step.status === 'failed' ? 'bg-red-100' :
                       step.status === 'blocked' ? 'bg-red-100' :
-                      'bg-white'
+                      'bg-alabaster'
                     }`}>
                       {step.details}
                     </div>
@@ -1008,7 +1008,7 @@ const IOSSecurityDemo = () => {
             d'une source connue et n'a pas été modifiée depuis sa signature. C'est la fondation 
             qui permet à AMFI de vérifier l'intégrité du code.
           </p>
-          <div className="text-sm bg-white border border-indigo-200 rounded p-3">
+          <div className="text-sm bg-alabaster border border-indigo-200 rounded p-3">
             <p className="font-semibold mb-2">Composants clés:</p>
             <ul className="space-y-1 text-gray-700 text-xs">
               <li>• <strong>Certificat:</strong> Identité du développeur (fourni par Apple)</li>
@@ -1020,7 +1020,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Processus de signature */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Processus de Signature (Étape par Étape)</h4>
           
           <div className="flex gap-2 flex-wrap mb-6">
@@ -1064,7 +1064,7 @@ const IOSSecurityDemo = () => {
                     </div>
 
                     {isActive && idx === 3 && (
-                      <div className="mt-3 p-3 bg-white rounded border border-gray-300 font-mono text-xs">
+                      <div className="mt-3 p-3 bg-alabaster rounded border border-gray-300 font-mono text-xs">
                         <div className="text-gray-600 mb-1"># Calcul du hash SHA-256</div>
                         <div className="text-green-600">$ shasum -a 256 MyApp</div>
                         <div className="mt-2 text-gray-800 break-all">
@@ -1076,7 +1076,7 @@ const IOSSecurityDemo = () => {
                     )}
 
                     {isActive && idx === 4 && (
-                      <div className="mt-3 p-3 bg-white rounded border border-gray-300">
+                      <div className="mt-3 p-3 bg-alabaster rounded border border-gray-300">
                         <div className="text-xs font-semibold mb-2">Contenu du profil:</div>
                         <div className="space-y-1 text-xs text-gray-700">
                           <div>• Team ID: ABC123XYZ</div>
@@ -1101,7 +1101,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Types de certificats */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Types de Certificats et Distribution</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {Object.entries(certificates).map(([key, cert]) => (
@@ -1111,7 +1111,7 @@ const IOSSecurityDemo = () => {
                 className={`p-4 rounded-lg border-2 transition-all text-left ${
                   certificateType === key
                     ? `border-${cert.color}-500 bg-${cert.color}-50 ring-4 ring-${cert.color}-200`
-                    : 'border-gray-300 bg-white hover:border-gray-400'
+                    : 'border-gray-300 bg-alabaster hover:border-gray-400'
                 } ${cert.status === 'expired' ? 'opacity-75' : ''}`}
               >
                 <div className="flex items-start gap-3 mb-2">
@@ -1152,7 +1152,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Entitlements */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Entitlements - Permissions de l'App</h4>
           <p className="text-sm text-gray-600 mb-4">
             Les entitlements définissent ce que l'app est autorisée à faire. Ils sont vérifiés 
@@ -1167,7 +1167,7 @@ const IOSSecurityDemo = () => {
                 className={`p-3 rounded-lg border-2 cursor-pointer transition-all ${
                   selectedEntitlement === key
                     ? 'border-blue-500 bg-blue-50 ring-4 ring-blue-200'
-                    : 'border-gray-300 bg-white hover:border-gray-400'
+                    : 'border-gray-300 bg-alabaster hover:border-gray-400'
                 } ${ent.required ? 'border-l-4 border-l-red-500' : ''}`}
               >
                 <div className="flex items-center justify-between">
@@ -1204,7 +1204,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Anatomie d'une app signée */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Anatomie d'une App Signée</h4>
           <div className="bg-gray-800 text-green-400 p-4 rounded font-mono text-xs space-y-1">
             <div>📱 MyApp.app/</div>
@@ -1219,7 +1219,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Vérification de signature */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Vérifier une Signature (Outils développeur)</h4>
           
           <button
@@ -1370,7 +1370,7 @@ const IOSSecurityDemo = () => {
             de sécurité élevés. Il protège contre les attaques man-in-the-middle et garantit 
             que les données en transit sont chiffrées.
           </p>
-          <div className="text-sm bg-white border border-blue-200 rounded p-3">
+          <div className="text-sm bg-alabaster border border-blue-200 rounded p-3">
             <p className="font-semibold mb-2">Exigences ATS par défaut:</p>
             <ul className="space-y-1 text-gray-700 text-xs">
               <li>• HTTPS obligatoire (pas de HTTP)</li>
@@ -1383,7 +1383,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Sélection du type de connexion */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Types de Connexion</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {Object.entries(connections).map(([key, conn]) => (
@@ -1393,7 +1393,7 @@ const IOSSecurityDemo = () => {
                 className={`p-4 rounded-lg border-2 transition-all text-left ${
                   connectionType === key
                     ? `border-${conn.color}-500 bg-${conn.color}-50 ring-4 ring-${conn.color}-200`
-                    : 'border-gray-300 bg-white hover:border-gray-400'
+                    : 'border-gray-300 bg-alabaster hover:border-gray-400'
                 }`}
               >
                 <div className="flex items-center gap-3 mb-2">
@@ -1407,14 +1407,14 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Simulation de connexion */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Simulation de Connexion</h4>
           
           <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-300">
             <div className="text-sm mb-2">
               <strong>App tente de se connecter à:</strong>
             </div>
-            <div className="font-mono text-sm bg-white p-2 rounded border border-gray-300">
+            <div className="font-mono text-sm bg-alabaster p-2 rounded border border-gray-300">
               {connectionType === 'https' || connectionType === 'tls10' || connectionType === 'selfsigned'
                 ? 'https://api.example.com/data'
                 : 'http://api.example.com/data'}
@@ -1482,7 +1482,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Attaques protégées */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Protection contre Man-in-the-Middle</h4>
           <div className="space-y-4">
             <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
@@ -1575,7 +1575,7 @@ const IOSSecurityDemo = () => {
             Il possède son propre système d'exploitation (sepOS) et gère toutes les opérations 
             cryptographiques sensibles.
           </p>
-          <div className="text-sm bg-white border border-purple-200 rounded p-3">
+          <div className="text-sm bg-alabaster border border-purple-200 rounded p-3">
             <p className="font-semibold mb-2">Responsabilités du Secure Enclave:</p>
             <ul className="space-y-1 text-gray-700">
               <li>• Stockage et gestion des clés cryptographiques</li>
@@ -1587,7 +1587,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Architecture visuelle */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Architecture Isolée</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Processeur principal */}
@@ -1596,11 +1596,11 @@ const IOSSecurityDemo = () => {
                 💻 Processeur Principal (Application Processor)
               </div>
               <div className="space-y-2 text-sm">
-                <div className="p-2 bg-white rounded border border-blue-200">
+                <div className="p-2 bg-alabaster rounded border border-blue-200">
                   <div className="font-semibold text-xs mb-1">iOS / Applications</div>
                   <div className="text-xs text-gray-600">Exécution des apps, UI, etc.</div>
                 </div>
-                <div className="p-2 bg-white rounded border border-blue-200">
+                <div className="p-2 bg-alabaster rounded border border-blue-200">
                   <div className="font-semibold text-xs mb-1">Kernel (XNU)</div>
                   <div className="text-xs text-gray-600">Gestion système</div>
                 </div>
@@ -1619,7 +1619,7 @@ const IOSSecurityDemo = () => {
                 🔒 Secure Enclave (Isolé)
               </div>
               <div className="space-y-2 text-sm">
-                <div className="p-2 bg-white rounded border-2 border-purple-300">
+                <div className="p-2 bg-alabaster rounded border-2 border-purple-300">
                   <div className="font-semibold text-xs mb-1">sepOS</div>
                   <div className="text-xs text-gray-600">OS dédié et isolé</div>
                 </div>
@@ -1637,7 +1637,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Simulation biométrique */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Simulation: Authentification Face ID</h4>
           
           <div className="space-y-4">
@@ -1832,7 +1832,7 @@ const IOSSecurityDemo = () => {
             le code de l'utilisateur et gérées par le Secure Enclave. Différentes classes de 
             protection déterminent quand les fichiers sont accessibles.
           </p>
-          <div className="text-sm bg-white border border-blue-200 rounded p-3">
+          <div className="text-sm bg-alabaster border border-blue-200 rounded p-3">
             <p className="font-semibold mb-2">Architecture de chiffrement:</p>
             <div className="space-y-1 text-gray-700 text-xs">
               <div>1. <strong>Clé matérielle</strong> (unique par appareil, gravée dans silicon)</div>
@@ -1843,7 +1843,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Contrôle état appareil */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">État de l'appareil</h4>
           <div className="grid grid-cols-2 gap-3">
             <button
@@ -1851,7 +1851,7 @@ const IOSSecurityDemo = () => {
               className={`p-3 rounded-lg border-2 transition-all ${
                 deviceState === 'boot'
                   ? 'border-red-500 bg-red-50 ring-4 ring-red-200'
-                  : 'border-gray-300 bg-white hover:border-gray-400'
+                  : 'border-gray-300 bg-alabaster hover:border-gray-400'
               }`}
             >
               <div className="text-2xl mb-1">🔴</div>
@@ -1864,7 +1864,7 @@ const IOSSecurityDemo = () => {
               className={`p-3 rounded-lg border-2 transition-all ${
                 deviceState === 'locked'
                   ? 'border-orange-500 bg-orange-50 ring-4 ring-orange-200'
-                  : 'border-gray-300 bg-white hover:border-gray-400'
+                  : 'border-gray-300 bg-alabaster hover:border-gray-400'
               }`}
             >
               <div className="text-2xl mb-1">🔒</div>
@@ -1877,7 +1877,7 @@ const IOSSecurityDemo = () => {
               className={`p-3 rounded-lg border-2 transition-all ${
                 deviceState === 'unlocked'
                   ? 'border-green-500 bg-green-50 ring-4 ring-green-200'
-                  : 'border-gray-300 bg-white hover:border-gray-400'
+                  : 'border-gray-300 bg-alabaster hover:border-gray-400'
               }`}
             >
               <div className="text-2xl mb-1">🔓</div>
@@ -1890,7 +1890,7 @@ const IOSSecurityDemo = () => {
               className={`p-3 rounded-lg border-2 transition-all ${
                 deviceState === 'locked-but-open'
                   ? 'border-blue-500 bg-blue-50 ring-4 ring-blue-200'
-                  : 'border-gray-300 bg-white hover:border-gray-400'
+                  : 'border-gray-300 bg-alabaster hover:border-gray-400'
               }`}
             >
               <div className="text-2xl mb-1">🔐</div>
@@ -1901,7 +1901,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {/* Classes de protection */}
-        <div className="bg-white border-2 border-gray-300 rounded-lg p-6">
+        <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
           <h4 className="font-bold mb-4">Classes de Protection des Fichiers</h4>
           <div className="space-y-3">
             {Object.entries(files).map(([key, file]) => {
@@ -1952,7 +1952,7 @@ const IOSSecurityDemo = () => {
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
           <h4 className="font-semibold mb-3 text-sm">Comment fonctionne le chiffrement:</h4>
           <div className="space-y-3 text-sm">
-            <div className="p-3 bg-white rounded border border-gray-300">
+            <div className="p-3 bg-alabaster rounded border border-gray-300">
               <div className="font-semibold mb-1">1. Clé Matérielle (UID)</div>
               <div className="text-xs text-gray-600">
                 Unique par appareil, gravée dans le silicon lors de la fabrication. 
@@ -1960,7 +1960,7 @@ const IOSSecurityDemo = () => {
               </div>
             </div>
             <div className="text-center text-gray-400">+</div>
-            <div className="p-3 bg-white rounded border border-gray-300">
+            <div className="p-3 bg-alabaster rounded border border-gray-300">
               <div className="font-semibold mb-1">2. Code Utilisateur</div>
               <div className="text-xs text-gray-600">
                 Dérivé du code/Face ID de l'utilisateur via le Secure Enclave.
@@ -2035,7 +2035,7 @@ const IOSSecurityDemo = () => {
               className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
                 selectedApp === key
                   ? 'border-red-500 bg-red-50 ring-4 ring-red-200'
-                  : 'border-gray-300 bg-white hover:border-gray-400'
+                  : 'border-gray-300 bg-alabaster hover:border-gray-400'
               }`}
             >
               <div className="text-3xl mb-2">{app.icon}</div>
@@ -2048,7 +2048,7 @@ const IOSSecurityDemo = () => {
         </div>
 
         {selectedApp === 'malicious' && (
-          <div className="bg-white border-2 border-red-300 rounded-lg p-6">
+          <div className="bg-alabaster border-2 border-red-300 rounded-lg p-6">
             <h4 className="font-bold mb-4 text-red-700">
               Tentatives d'accès depuis l'app malveillante
             </h4>
@@ -2162,7 +2162,7 @@ const IOSSecurityDemo = () => {
             ))}
           </div>
 
-          <div className="bg-white border-2 border-gray-300 rounded-lg p-6 min-h-64">
+          <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6 min-h-64">
             <h4 className="font-bold mb-2">{steps[attackStep].title}</h4>
             <p className="text-sm mb-6 text-gray-600">{steps[attackStep].desc}</p>
 
@@ -2255,7 +2255,7 @@ const IOSSecurityDemo = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-8">
       <div className="max-w-5xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <div className="bg-alabaster rounded-xl shadow-lg p-8">
 <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
   <div className="flex items-center gap-3">
     <Shield className="w-8 h-8 text-blue-600" />
