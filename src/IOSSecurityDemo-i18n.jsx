@@ -426,7 +426,7 @@ const IOSSecurityDemo = () => {
                   : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
               }`}
             >
-              Étape {idx + 1}
+              {t('amfiTab.step')} {idx + 1}
             </button>
           ))}
         </div>
@@ -458,7 +458,7 @@ const IOSSecurityDemo = () => {
                 <div className="text-gray-600">
                   {selectedFile === 'legitimate' 
                     ? 'Hash: a3f2c1d9e8b7...' 
-                    : 'Hash: x9z8y7w6v5u4... (modifié!)'}
+                    : `Hash: x9z8y7w6v5u4... ${t('amfiTab.hashModified')}`}
                 </div>
               </div>
             </div>
@@ -476,10 +476,10 @@ const IOSSecurityDemo = () => {
                   {t('amfiTab.verificationTitle')}
                 </div>
                 <div className="text-xs space-y-1">
-                  <div>1. Lecture de la signature cryptographique</div>
-                  <div>2. Calcul du hash du binaire</div>
-                  <div>3. Vérification du certificat</div>
-                  <div>4. Comparaison avec le blob de signature</div>
+                  <div>1. {t('amfiTab.verificationSteps.step1')}</div>
+                  <div>2. {t('amfiTab.verificationSteps.step2')}</div>
+                  <div>3. {t('amfiTab.verificationSteps.step3')}</div>
+                  <div>4. {t('amfiTab.verificationSteps.step4')}</div>
                 </div>
               </div>
             )}
@@ -511,8 +511,8 @@ const IOSSecurityDemo = () => {
                 </div>
                 <div className="text-sm text-gray-700">
                   {selectedFile === 'legitimate' 
-                    ? 'Le code est authentique et n\'a pas été modifié depuis sa signature.'
-                    : 'Le hash calculé ne correspond pas à la signature, ou la signature est absente/invalide.'}
+                    ? t('amfiTab.validSignatureDesc')
+                    : t('amfiTab.invalidSignatureDesc')}
                 </div>
               </div>
             )}
@@ -544,8 +544,8 @@ const IOSSecurityDemo = () => {
                 </div>
                 <div className="text-sm">
                   {selectedFile === 'legitimate' 
-                    ? '✅ L\'application peut s\'exécuter normalement sur l\'appareil.'
-                    : '🚫 AMFI empêche le lancement. L\'utilisateur voit une erreur. Le code malveillant ou modifié ne peut pas s\'exécuter.'}
+                    ? `✅ ${t('amfiTab.executionAllowedDesc')}`
+                    : `🚫 ${t('amfiTab.executionDeniedDesc')}`}
                 </div>
               </div>
             )}
@@ -557,30 +557,26 @@ const IOSSecurityDemo = () => {
           <div className="space-y-2 text-sm text-gray-700">
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Vérification au lancement:</strong> Chaque app est vérifiée avant exécution</span>
+              <span dangerouslySetInnerHTML={{ __html: t('amfiTab.protection1') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Vérification des pages:</strong> Les pages mémoire sont vérifiées lors des défauts de page</span>
+              <span dangerouslySetInnerHTML={{ __html: t('amfiTab.protection2') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Bibliothèques dynamiques:</strong> Vérification des frameworks et dylibs chargés</span>
+              <span dangerouslySetInnerHTML={{ __html: t('amfiTab.protection3') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Protection continue:</strong> Empêche la modification du code en mémoire</span>
+              <span dangerouslySetInnerHTML={{ __html: t('amfiTab.protection4') }} />
             </div>
           </div>
         </div>
 
         <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-2 text-sm">Position d'AMFI dans la défense en profondeur:</h4>
-          <p className="text-sm text-gray-700">
-            AMFI est la <strong>première ligne de défense</strong>. Avant même que le Sandbox, l'ASLR 
-            ou le XN bit n'interviennent, AMFI s'assure que seul du code légitime et non modifié 
-            peut s'exécuter. C'est la fondation sur laquelle reposent toutes les autres protections.
-          </p>
+          <h4 className="font-semibold mb-2 text-sm">{t('amfiTab.positionTitle')}</h4>
+          <p className="text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: t('amfiTab.positionDesc') }} />
         </div>
       </div>
     );
@@ -592,37 +588,37 @@ const IOSSecurityDemo = () => {
 
     const normalBootSteps = [
       {
-        title: "Boot ROM",
-        desc: "Code immuable gravé dans le silicon lors de la fabrication",
-        details: "Vérifie la signature de LLB (Low Level Bootloader)",
+        title: t('secureBootTab.steps.normal.step1.title'),
+        desc: t('secureBootTab.steps.normal.step1.desc'),
+        details: t('secureBootTab.steps.normal.step1.details'),
         status: "trusted",
         level: 0
       },
       {
-        title: "LLB (Low Level Bootloader)",
-        desc: "Premier code chargé depuis le stockage",
-        details: "Vérifie la signature d'iBoot",
+        title: t('secureBootTab.steps.normal.step2.title'),
+        desc: t('secureBootTab.steps.normal.step2.desc'),
+        details: t('secureBootTab.steps.normal.step2.details'),
         status: "verified",
         level: 1
       },
       {
-        title: "iBoot",
-        desc: "Bootloader principal d'iOS",
-        details: "Vérifie la signature du Kernel iOS",
+        title: t('secureBootTab.steps.normal.step3.title'),
+        desc: t('secureBootTab.steps.normal.step3.desc'),
+        details: t('secureBootTab.steps.normal.step3.details'),
         status: "verified",
         level: 2
       },
       {
-        title: "Kernel iOS (XNU)",
-        desc: "Noyau du système d'exploitation",
-        details: "Vérifie les extensions kernel et charge le système",
+        title: t('secureBootTab.steps.normal.step4.title'),
+        desc: t('secureBootTab.steps.normal.step4.desc'),
+        details: t('secureBootTab.steps.normal.step4.details'),
         status: "verified",
         level: 3
       },
       {
-        title: "iOS & Apps",
-        desc: "Système d'exploitation complet démarré",
-        details: "AMFI vérifie toutes les apps avant exécution",
+        title: t('secureBootTab.steps.normal.step5.title'),
+        desc: t('secureBootTab.steps.normal.step5.desc'),
+        details: t('secureBootTab.steps.normal.step5.details'),
         status: "running",
         level: 4
       }
@@ -630,23 +626,23 @@ const IOSSecurityDemo = () => {
 
     const tamperedBootSteps = [
       {
-        title: "Boot ROM",
-        desc: "Code immuable gravé dans le silicon lors de la fabrication",
-        details: "Vérifie la signature de LLB (Low Level Bootloader)",
+        title: t('secureBootTab.steps.tampered.step1.title'),
+        desc: t('secureBootTab.steps.tampered.step1.desc'),
+        details: t('secureBootTab.steps.tampered.step1.details'),
         status: "trusted",
         level: 0
       },
       {
-        title: "LLB Modifié ⚠️",
-        desc: "Bootloader modifié par un attaquant",
-        details: "Signature invalide détectée !",
+        title: t('secureBootTab.steps.tampered.step2.title'),
+        desc: t('secureBootTab.steps.tampered.step2.desc'),
+        details: t('secureBootTab.steps.tampered.step2.details'),
         status: "failed",
         level: 1
       },
       {
-        title: "BOOT ARRÊTÉ",
-        desc: "Le Boot ROM refuse de continuer",
-        details: "L'appareil entre en mode récupération (DFU)",
+        title: t('secureBootTab.steps.tampered.step3.title'),
+        desc: t('secureBootTab.steps.tampered.step3.desc'),
+        details: t('secureBootTab.steps.tampered.step3.details'),
         status: "blocked",
         level: 2
       }
@@ -660,18 +656,15 @@ const IOSSecurityDemo = () => {
         <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6">
           <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
             <Shield className="w-5 h-5 text-green-600" />
-            Secure Boot Chain - Chaîne de Confiance
+            {t('secureBootTab.title')}
           </h3>
           <p className="text-sm mb-3">
-            Le Secure Boot garantit que seul du logiciel légitime et signé par Apple peut démarrer 
-            sur l'appareil. Chaque étape vérifie cryptographiquement la suivante avant de lui passer 
-            le contrôle, créant une chaîne de confiance ininterrompue.
+            {t('secureBootTab.description')}
           </p>
           <div className="text-sm bg-alabaster border border-green-200 rounded p-3">
-            <p className="font-semibold mb-2">Principe fondamental:</p>
+            <p className="font-semibold mb-2">{t('secureBootTab.fundamentalPrinciple')}</p>
             <p className="text-gray-700 text-xs">
-              La Boot ROM est la "racine de confiance" (Root of Trust) - elle est immuable et 
-              ne peut jamais être modifiée. Toute la sécurité iOS repose sur cette fondation.
+              {t('secureBootTab.fundamentalPrincipleDesc')}
             </p>
           </div>
         </div>
@@ -688,7 +681,7 @@ const IOSSecurityDemo = () => {
           >
             <div className="text-3xl mb-2">✅</div>
             <div className="font-semibold">{t('secureBootTab.normalBoot')}</div>
-            <div className="text-xs text-gray-600 mt-1">Tous les composants signés par Apple</div>
+            <div className="text-xs text-gray-600 mt-1">{t('secureBootTab.normalBootDesc')}</div>
           </button>
 
           <button
@@ -701,7 +694,7 @@ const IOSSecurityDemo = () => {
           >
             <div className="text-3xl mb-2">⚠️</div>
             <div className="font-semibold">{t('secureBootTab.compromisedBoot')}</div>
-            <div className="text-xs text-gray-600 mt-1">Bootloader modifié détecté</div>
+            <div className="text-xs text-gray-600 mt-1">{t('secureBootTab.compromisedBootDesc')}</div>
           </button>
         </div>
 
@@ -717,14 +710,14 @@ const IOSSecurityDemo = () => {
                   : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
               }`}
             >
-              Étape {idx + 1}
+              {t('secureBootTab.step')} {idx + 1}
             </button>
           ))}
         </div>
 
         {/* Visualisation de la chaîne de boot */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Séquence de Démarrage</h4>
+          <h4 className="font-bold mb-4">{t('secureBootTab.bootSequence')}</h4>
           
           <div className="space-y-3">
             {currentSteps.map((step, idx) => {
@@ -779,7 +772,7 @@ const IOSSecurityDemo = () => {
 
                     {isActive && idx < maxSteps - 1 && step.status !== 'failed' && step.status !== 'blocked' && (
                       <div className="mt-3 text-xs text-gray-600 bg-blue-50 p-2 rounded">
-                        🔍 Vérification de la signature cryptographique en cours...
+                        🔍 {t('secureBootTab.verifyingSignature')}
                       </div>
                     )}
                   </div>
@@ -805,9 +798,7 @@ const IOSSecurityDemo = () => {
                 <div>
                   <div className="font-bold text-red-800 mb-2">{t('secureBootTab.bootBlockedTitle')}</div>
                   <div className="text-sm text-gray-700">
-                    Le Secure Boot a détecté un composant modifié et a immédiatement arrêté le processus. 
-                    L'appareil ne peut pas démarrer et affiche un écran de récupération. Il faut restaurer 
-                    avec iTunes/Finder pour réinstaller iOS légitime.
+                    {t('secureBootTab.bootBlockedDesc')}
                   </div>
                 </div>
               </div>
@@ -821,8 +812,7 @@ const IOSSecurityDemo = () => {
                 <div>
                   <div className="font-bold text-green-800 mb-2">{t('secureBootTab.bootSuccessTitle')}</div>
                   <div className="text-sm text-gray-700">
-                    Toutes les étapes ont été vérifiées avec succès. iOS démarre sur une base 
-                    de confiance totale - chaque composant a été authentifié cryptographiquement.
+                    {t('secureBootTab.bootSuccessDesc')}
                   </div>
                 </div>
               </div>
@@ -832,34 +822,30 @@ const IOSSecurityDemo = () => {
 
         {/* Informations complémentaires */}
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-3 text-sm">Protections du Secure Boot:</h4>
+          <h4 className="font-semibold mb-3 text-sm">{t('secureBootTab.protectionsTitle')}</h4>
           <div className="space-y-2 text-sm text-gray-700">
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Boot ROM immuable:</strong> Impossible à modifier, même avec accès physique</span>
+              <span dangerouslySetInnerHTML={{ __html: t('secureBootTab.protection1') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Signatures RSA:</strong> Chaque composant doit être signé par Apple</span>
+              <span dangerouslySetInnerHTML={{ __html: t('secureBootTab.protection2') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Chaîne non-contournable:</strong> Impossible de sauter une étape</span>
+              <span dangerouslySetInnerHTML={{ __html: t('secureBootTab.protection3') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Protection anti-rollback:</strong> Empêche l'installation de versions vulnérables</span>
+              <span dangerouslySetInnerHTML={{ __html: t('secureBootTab.protection4') }} />
             </div>
           </div>
         </div>
 
         <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-2 text-sm">Pourquoi c'est la fondation de tout:</h4>
-          <p className="text-sm text-gray-700">
-            Sans le Secure Boot, toutes les autres protections (AMFI, Sandbox, Secure Enclave, etc.) 
-            pourraient être contournées en installant un système d'exploitation malveillant. 
-            Le Secure Boot est la <strong>racine de confiance</strong> qui garantit que tout commence bien.
-          </p>
+          <h4 className="font-semibold mb-2 text-sm">{t('secureBootTab.foundationTitle')}</h4>
+          <p className="text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: t('secureBootTab.foundationDesc') }} />
         </div>
       </div>
     );
@@ -873,124 +859,124 @@ const IOSSecurityDemo = () => {
 
     const certificates = {
       development: {
-        name: "Development",
+        name: t('codeSigningTab.certificates.development.name'),
         icon: "🔧",
         color: "blue",
-        desc: "Test sur vos propres appareils",
-        devices: "Limité aux devices enregistrés",
-        duration: "1 an",
+        desc: t('codeSigningTab.certificates.development.desc'),
+        devices: t('codeSigningTab.certificates.development.devices'),
+        duration: t('codeSigningTab.certificates.development.duration'),
         status: "valid"
       },
       adhoc: {
-        name: "Ad Hoc",
+        name: t('codeSigningTab.certificates.adhoc.name'),
         icon: "👥",
         color: "purple",
-        desc: "Distribution à des testeurs (max 100)",
-        devices: "Limité à 100 devices UDIDs",
-        duration: "1 an",
+        desc: t('codeSigningTab.certificates.adhoc.desc'),
+        devices: t('codeSigningTab.certificates.adhoc.devices'),
+        duration: t('codeSigningTab.certificates.adhoc.duration'),
         status: "valid"
       },
       enterprise: {
-        name: "Enterprise",
+        name: t('codeSigningTab.certificates.enterprise.name'),
         icon: "🏢",
         color: "orange",
-        desc: "Distribution interne en entreprise",
-        devices: "Illimité (employés uniquement)",
-        duration: "1 an",
+        desc: t('codeSigningTab.certificates.enterprise.desc'),
+        devices: t('codeSigningTab.certificates.enterprise.devices'),
+        duration: t('codeSigningTab.certificates.enterprise.duration'),
         status: "valid"
       },
       appstore: {
-        name: "App Store",
+        name: t('codeSigningTab.certificates.appstore.name'),
         icon: "🏪",
         color: "green",
-        desc: "Distribution publique via App Store",
-        devices: "Tous les appareils iOS",
-        duration: "Re-signé par Apple",
+        desc: t('codeSigningTab.certificates.appstore.desc'),
+        devices: t('codeSigningTab.certificates.appstore.devices'),
+        duration: t('codeSigningTab.certificates.appstore.duration'),
         status: "valid"
       },
       expired: {
-        name: "Certificat Expiré",
+        name: t('codeSigningTab.certificates.expired.name'),
         icon: "⏰",
         color: "red",
-        desc: "Certificat expiré ou révoqué",
-        devices: "N/A",
-        duration: "Expiré",
+        desc: t('codeSigningTab.certificates.expired.desc'),
+        devices: t('codeSigningTab.certificates.expired.devices'),
+        duration: t('codeSigningTab.certificates.expired.duration'),
         status: "expired"
       }
     };
 
     const entitlements = {
       sandbox: {
-        name: "App Sandbox",
+        name: t('codeSigningTab.entitlementsList.sandbox.name'),
         key: "com.apple.security.app-sandbox",
         icon: "🔒",
         required: true,
-        desc: "Isolation de l'application (obligatoire)"
+        desc: t('codeSigningTab.entitlementsList.sandbox.desc')
       },
       icloud: {
-        name: "iCloud",
+        name: t('codeSigningTab.entitlementsList.icloud.name'),
         key: "com.apple.developer.icloud-services",
         icon: "☁️",
         required: false,
-        desc: "Accès au stockage iCloud"
+        desc: t('codeSigningTab.entitlementsList.icloud.desc')
       },
       healthkit: {
-        name: "HealthKit",
+        name: t('codeSigningTab.entitlementsList.healthkit.name'),
         key: "com.apple.developer.healthkit",
         icon: "💪",
         required: false,
-        desc: "Accès aux données de santé"
+        desc: t('codeSigningTab.entitlementsList.healthkit.desc')
       },
       push: {
-        name: "Push Notifications",
+        name: t('codeSigningTab.entitlementsList.push.name'),
         key: "aps-environment",
         icon: "🔔",
         required: false,
-        desc: "Notifications push"
+        desc: t('codeSigningTab.entitlementsList.push.desc')
       },
       wallet: {
-        name: "Apple Pay/Wallet",
+        name: t('codeSigningTab.entitlementsList.wallet.name'),
         key: "com.apple.developer.pass-type-identifiers",
         icon: "💳",
         required: false,
-        desc: "Intégration Wallet"
+        desc: t('codeSigningTab.entitlementsList.wallet.desc')
       }
     };
 
     const signingSteps = [
       {
-        title: "Développement de l'App",
-        desc: "Le développeur écrit le code en Swift/Objective-C",
+        title: t('codeSigningTab.signingSteps.step1.title'),
+        desc: t('codeSigningTab.signingSteps.step1.desc'),
         icon: "👨‍💻",
         color: "blue"
       },
       {
-        title: "Compilation",
-        desc: "Xcode compile le code source en binaire Mach-O",
+        title: t('codeSigningTab.signingSteps.step2.title'),
+        desc: t('codeSigningTab.signingSteps.step2.desc'),
         icon: "⚙️",
         color: "purple"
       },
       {
-        title: "Ajout des Entitlements",
-        desc: "Configuration des permissions et capacités",
+        title: t('codeSigningTab.signingSteps.step3.title'),
+        desc: t('codeSigningTab.signingSteps.step3.desc'),
         icon: "🔑",
         color: "orange"
       },
       {
-        title: "Signature Cryptographique",
-        desc: "Hash SHA-256 + Signature avec certificat développeur",
+        title: t('codeSigningTab.signingSteps.step4.title'),
+        desc: t('codeSigningTab.signingSteps.step4.desc'),
         icon: "✍️",
         color: "green"
       },
       {
-        title: "Profil de Provisionnement",
-        desc: "embedded.mobileprovision ajouté à l'app",
+        title: t('codeSigningTab.signingSteps.step5.title'),
+        desc: t('codeSigningTab.signingSteps.step5.desc'),
         icon: "📄",
         color: "indigo"
       },
       {
-        title: "Signature Apple (si App Store)",
-        desc: "Apple re-signe avec son propre certificat",
+        title: t('codeSigningTab.signingSteps.step6.title'),
+        desc: t('codeSigningTab.signingSteps.step6.desc'),
         icon: "🍎",
         color: "red"
       }
@@ -1001,27 +987,25 @@ const IOSSecurityDemo = () => {
         <div className="bg-indigo-50 border-2 border-indigo-200 rounded-lg p-6">
           <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
             <Shield className="w-5 h-5 text-indigo-600" />
-            Code Signing - Signature Cryptographique
+            {t('codeSigningTab.title')}
           </h3>
           <p className="text-sm mb-3">
-            Le Code Signing est le processus par lequel Apple garantit que chaque app provient 
-            d'une source connue et n'a pas été modifiée depuis sa signature. C'est la fondation 
-            qui permet à AMFI de vérifier l'intégrité du code.
+            {t('codeSigningTab.description')}
           </p>
           <div className="text-sm bg-alabaster border border-indigo-200 rounded p-3">
-            <p className="font-semibold mb-2">Composants clés:</p>
+            <p className="font-semibold mb-2">{t('codeSigningTab.keyComponents')}</p>
             <ul className="space-y-1 text-gray-700 text-xs">
-              <li>• <strong>Certificat:</strong> Identité du développeur (fourni par Apple)</li>
-              <li>• <strong>Profil de provisionnement:</strong> Permissions + devices autorisés</li>
-              <li>• <strong>Entitlements:</strong> Capacités spécifiques de l'app</li>
-              <li>• <strong>Code Signature:</strong> Hash cryptographique (SHA-256) du binaire</li>
+              <li dangerouslySetInnerHTML={{ __html: `• ${t('codeSigningTab.certificate')}` }} />
+              <li dangerouslySetInnerHTML={{ __html: `• ${t('codeSigningTab.provisioningProfile')}` }} />
+              <li dangerouslySetInnerHTML={{ __html: `• ${t('codeSigningTab.entitlements')}` }} />
+              <li dangerouslySetInnerHTML={{ __html: `• ${t('codeSigningTab.codeSignature')}` }} />
             </ul>
           </div>
         </div>
 
         {/* Processus de signature */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Processus de Signature (Étape par Étape)</h4>
+          <h4 className="font-bold mb-4">{t('codeSigningTab.signingProcessTitle')}</h4>
           
           <div className="flex gap-2 flex-wrap mb-6">
             {signingSteps.map((_, idx) => (
@@ -1034,7 +1018,7 @@ const IOSSecurityDemo = () => {
                     : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
                 }`}
               >
-                Étape {idx + 1}
+                {t('codeSigningTab.step')} {idx + 1}
               </button>
             ))}
           </div>
@@ -1077,13 +1061,13 @@ const IOSSecurityDemo = () => {
 
                     {isActive && idx === 4 && (
                       <div className="mt-3 p-3 bg-alabaster rounded border border-gray-300">
-                        <div className="text-xs font-semibold mb-2">Contenu du profil:</div>
+                        <div className="text-xs font-semibold mb-2">{t('codeSigningTab.profileContent')}</div>
                         <div className="space-y-1 text-xs text-gray-700">
                           <div>• Team ID: ABC123XYZ</div>
                           <div>• Bundle ID: com.example.myapp</div>
-                          <div>• Devices autorisés: 5 appareils</div>
-                          <div>• Expiration: 25 décembre 2026</div>
-                          <div>• Entitlements inclus: iCloud, HealthKit</div>
+                          <div>• {t('codeSigningTab.authorizedDevices')} 5</div>
+                          <div>• {t('codeSigningTab.expiration')} 25/12/2026</div>
+                          <div>• {t('codeSigningTab.includedEntitlements')} iCloud, HealthKit</div>
                         </div>
                       </div>
                     )}
@@ -1102,7 +1086,7 @@ const IOSSecurityDemo = () => {
 
         {/* Types de certificats */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Types de Certificats et Distribution</h4>
+          <h4 className="font-bold mb-4">{t('codeSigningTab.certificateTypesTitle')}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {Object.entries(certificates).map(([key, cert]) => (
               <button
@@ -1120,15 +1104,15 @@ const IOSSecurityDemo = () => {
                     <div className="font-bold flex items-center gap-2">
                       {cert.name}
                       {cert.status === 'expired' && (
-                        <span className="text-xs bg-red-200 text-red-800 px-2 py-0.5 rounded">Expiré</span>
+                        <span className="text-xs bg-red-200 text-red-800 px-2 py-0.5 rounded">{t('codeSigningTab.expiredLabel')}</span>
                       )}
                     </div>
                     <div className="text-xs text-gray-600 mt-1">{cert.desc}</div>
                   </div>
                 </div>
                 <div className="text-xs space-y-1 mt-3 pt-3 border-t border-gray-200">
-                  <div><strong>Devices:</strong> {cert.devices}</div>
-                  <div><strong>Durée:</strong> {cert.duration}</div>
+                  <div><strong>{t('codeSigningTab.devicesLabel')}</strong> {cert.devices}</div>
+                  <div><strong>{t('codeSigningTab.durationLabel')}</strong> {cert.duration}</div>
                 </div>
               </button>
             ))}
@@ -1139,11 +1123,11 @@ const IOSSecurityDemo = () => {
               <div className="flex items-start gap-2">
                 <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
-                  <div className="font-bold text-red-800 mb-1">Certificat Expiré/Révoqué</div>
+                  <div className="font-bold text-red-800 mb-1">{t('codeSigningTab.expiredCertificateTitle')}</div>
                   <div className="text-gray-700">
-                    • Apps déjà installées: Continuent de fonctionner<br/>
-                    • Nouvelles installations: Refusées par iOS<br/>
-                    • Si révoqué par Apple: AMFI refuse de lancer l'app
+                    • {t('codeSigningTab.expiredCertificateDesc1')}<br/>
+                    • {t('codeSigningTab.expiredCertificateDesc2')}<br/>
+                    • {t('codeSigningTab.expiredCertificateDesc3')}
                   </div>
                 </div>
               </div>
@@ -1153,10 +1137,9 @@ const IOSSecurityDemo = () => {
 
         {/* Entitlements */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Entitlements - Permissions de l'App</h4>
+          <h4 className="font-bold mb-4">{t('codeSigningTab.entitlementsTitle')}</h4>
           <p className="text-sm text-gray-600 mb-4">
-            Les entitlements définissent ce que l'app est autorisée à faire. Ils sont vérifiés 
-            par le système au runtime.
+            {t('codeSigningTab.entitlementsDesc')}
           </p>
 
           <div className="space-y-2">
@@ -1178,7 +1161,7 @@ const IOSSecurityDemo = () => {
                         {ent.name}
                         {ent.required && (
                           <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">
-                            Obligatoire
+                            {t('codeSigningTab.required')}
                           </span>
                         )}
                       </div>
@@ -1205,57 +1188,57 @@ const IOSSecurityDemo = () => {
 
         {/* Anatomie d'une app signée */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Anatomie d'une App Signée</h4>
+          <h4 className="font-bold mb-4">{t('codeSigningTab.signedAppAnatomy')}</h4>
           <div className="bg-gray-800 text-green-400 p-4 rounded font-mono text-xs space-y-1">
             <div>📱 MyApp.app/</div>
-            <div className="ml-4">├── 📄 MyApp <span className="text-gray-500">(binaire exécutable)</span></div>
-            <div className="ml-4">├── 📋 Info.plist <span className="text-gray-500">(métadonnées)</span></div>
+            <div className="ml-4">├── 📄 MyApp <span className="text-gray-500">({t('codeSigningTab.anatomyBinary')})</span></div>
+            <div className="ml-4">├── 📋 Info.plist <span className="text-gray-500">({t('codeSigningTab.anatomyMetadata')})</span></div>
             <div className="ml-4">├── 🔐 _CodeSignature/</div>
-            <div className="ml-8">│   └── CodeResources <span className="text-gray-500">(hash de tous les fichiers)</span></div>
-            <div className="ml-4">├── 📄 embedded.mobileprovision <span className="text-gray-500">(profil)</span></div>
-            <div className="ml-4">├── 🖼️  Assets.car <span className="text-gray-500">(images, icônes)</span></div>
-            <div className="ml-4">└── 📚 Frameworks/ <span className="text-gray-500">(bibliothèques)</span></div>
+            <div className="ml-8">│   └── CodeResources <span className="text-gray-500">({t('codeSigningTab.anatomyHashFiles')})</span></div>
+            <div className="ml-4">├── 📄 embedded.mobileprovision <span className="text-gray-500">({t('codeSigningTab.anatomyProfile')})</span></div>
+            <div className="ml-4">├── 🖼️  Assets.car <span className="text-gray-500">({t('codeSigningTab.anatomyAssets')})</span></div>
+            <div className="ml-4">└── 📚 Frameworks/ <span className="text-gray-500">({t('codeSigningTab.anatomyFrameworks')})</span></div>
           </div>
         </div>
 
         {/* Vérification de signature */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Vérifier une Signature (Outils développeur)</h4>
+          <h4 className="font-bold mb-4">{t('codeSigningTab.verifySignatureTitle')}</h4>
           
           <button
             onClick={() => setShowVerification(!showVerification)}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg transition-all mb-4"
           >
-            {showVerification ? 'Masquer' : 'Afficher'} les commandes de vérification
+            {showVerification ? t('codeSigningTab.hideCommands') : t('codeSigningTab.showCommands')}
           </button>
 
           {showVerification && (
             <div className="space-y-4">
               <div>
-                <div className="text-sm font-semibold mb-2">1. Vérifier la signature</div>
+                <div className="text-sm font-semibold mb-2">1. {t('codeSigningTab.verifySignature')}</div>
                 <div className="bg-gray-800 text-green-400 p-3 rounded font-mono text-xs">
                   <div>$ codesign -dvvv MyApp.app</div>
-                  <div className="text-gray-400 mt-2"># Affiche:</div>
+                  <div className="text-gray-400 mt-2"># Output:</div>
                   <div className="text-white">Executable=/path/to/MyApp.app/MyApp</div>
                   <div className="text-white">Identifier=com.example.myapp</div>
                   <div className="text-white">Authority=iPhone Developer: John Doe</div>
-                  <div className="text-white">Signed Time=26 déc. 2025 à 10:30:00</div>
+                  <div className="text-white">Signed Time=26 Dec 2025 10:30:00</div>
                 </div>
               </div>
 
               <div>
-                <div className="text-sm font-semibold mb-2">2. Afficher les entitlements</div>
+                <div className="text-sm font-semibold mb-2">2. {t('codeSigningTab.showEntitlements')}</div>
                 <div className="bg-gray-800 text-green-400 p-3 rounded font-mono text-xs">
                   <div>$ codesign -d --entitlements - MyApp.app</div>
-                  <div className="text-gray-400 mt-2"># Affiche tous les entitlements en XML</div>
+                  <div className="text-gray-400 mt-2"># Shows all entitlements in XML</div>
                 </div>
               </div>
 
               <div>
-                <div className="text-sm font-semibold mb-2">3. Vérifier le profil de provisionnement</div>
+                <div className="text-sm font-semibold mb-2">3. {t('codeSigningTab.verifyProvisioningProfile')}</div>
                 <div className="bg-gray-800 text-green-400 p-3 rounded font-mono text-xs">
                   <div>$ security cms -D -i MyApp.app/embedded.mobileprovision</div>
-                  <div className="text-gray-400 mt-2"># Décode et affiche le profil</div>
+                  <div className="text-gray-400 mt-2"># Decodes and shows the profile</div>
                 </div>
               </div>
             </div>
@@ -1264,44 +1247,37 @@ const IOSSecurityDemo = () => {
 
         {/* Chaîne de certificats */}
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-3 text-sm">Chaîne de Confiance (Certificate Chain)</h4>
+          <h4 className="font-semibold mb-3 text-sm">{t('codeSigningTab.certificateChainTitle')}</h4>
           <div className="space-y-3">
             <div className="p-3 bg-blue-50 rounded border-2 border-blue-300">
-              <div className="font-bold text-sm">🍎 Apple Root CA</div>
-              <div className="text-xs text-gray-600">Autorité de certification racine d'Apple</div>
+              <div className="font-bold text-sm">🍎 {t('codeSigningTab.appleRootCA')}</div>
+              <div className="text-xs text-gray-600">{t('codeSigningTab.appleRootCADesc')}</div>
             </div>
-            <div className="text-center text-gray-400">⬇️ Signe</div>
+            <div className="text-center text-gray-400">⬇️ {t('codeSigningTab.signs')}</div>
             <div className="p-3 bg-purple-50 rounded border-2 border-purple-300">
-              <div className="font-bold text-sm">🌐 Apple WWDR CA</div>
-              <div className="text-xs text-gray-600">Worldwide Developer Relations</div>
+              <div className="font-bold text-sm">🌐 {t('codeSigningTab.appleWWDRCA')}</div>
+              <div className="text-xs text-gray-600">{t('codeSigningTab.appleWWDRCADesc')}</div>
             </div>
-            <div className="text-center text-gray-400">⬇️ Signe</div>
+            <div className="text-center text-gray-400">⬇️ {t('codeSigningTab.signs')}</div>
             <div className="p-3 bg-green-50 rounded border-2 border-green-300">
-              <div className="font-bold text-sm">👤 Certificat Développeur</div>
-              <div className="text-xs text-gray-600">iPhone Developer: John Doe (ABC123)</div>
+              <div className="font-bold text-sm">👤 {t('codeSigningTab.developerCertificate')}</div>
+              <div className="text-xs text-gray-600">{t('codeSigningTab.developerCertificateDesc')}</div>
             </div>
-            <div className="text-center text-gray-400">⬇️ Signe</div>
+            <div className="text-center text-gray-400">⬇️ {t('codeSigningTab.signs')}</div>
             <div className="p-3 bg-indigo-50 rounded border-2 border-indigo-300">
-              <div className="font-bold text-sm">📱 MyApp.app</div>
-              <div className="text-xs text-gray-600">L'application finale signée</div>
+              <div className="font-bold text-sm">📱 {t('codeSigningTab.finalApp')}</div>
+              <div className="text-xs text-gray-600">{t('codeSigningTab.finalAppDesc')}</div>
             </div>
           </div>
         </div>
 
         <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-2 text-sm">Relation avec AMFI:</h4>
+          <h4 className="font-semibold mb-2 text-sm">{t('codeSigningTab.amfiRelationTitle')}</h4>
           <div className="text-sm text-gray-700 space-y-2">
-            <p>
-              <strong>Code Signing</strong> est le <em>processus</em> par lequel les développeurs 
-              signent leurs apps avec des certificats Apple.
-            </p>
-            <p>
-              <strong>AMFI</strong> est le <em>mécanisme de vérification</em> qui s'assure au runtime 
-              que la signature est valide et que le code n'a pas été modifié.
-            </p>
+            <p dangerouslySetInnerHTML={{ __html: t('codeSigningTab.amfiRelationDesc1') }} />
+            <p dangerouslySetInnerHTML={{ __html: t('codeSigningTab.amfiRelationDesc2') }} />
             <p className="pt-2 border-t border-blue-200">
-              💡 Sans Code Signing, AMFI n'aurait rien à vérifier. Ensemble, ils garantissent 
-              que seul du code légitime s'exécute sur iOS.
+              💡 {t('codeSigningTab.amfiRelationConclusion')}
             </p>
           </div>
         </div>
@@ -1315,39 +1291,39 @@ const IOSSecurityDemo = () => {
 
     const connections = {
       https: {
-        name: "HTTPS avec TLS 1.3",
+        name: t('atsTab.connections.https.name'),
         status: "secure",
         icon: "🔒",
         color: "green",
-        details: "Connexion chiffrée avec certificat valide"
+        details: t('atsTab.connections.https.details')
       },
       httpAllowed: {
-        name: "HTTP (Exception configurée)",
+        name: t('atsTab.connections.httpAllowed.name'),
         status: "warning",
         icon: "⚠️",
         color: "orange",
-        details: "Autorisé via NSExceptionDomains dans Info.plist"
+        details: t('atsTab.connections.httpAllowed.details')
       },
       httpBlocked: {
-        name: "HTTP (Non autorisé)",
+        name: t('atsTab.connections.httpBlocked.name'),
         status: "blocked",
         icon: "🚫",
         color: "red",
-        details: "ATS bloque la connexion non sécurisée"
+        details: t('atsTab.connections.httpBlocked.details')
       },
       tls10: {
-        name: "HTTPS avec TLS 1.0",
+        name: t('atsTab.connections.tls10.name'),
         status: "blocked",
         icon: "🚫",
         color: "red",
-        details: "Version TLS obsolète - ATS bloque"
+        details: t('atsTab.connections.tls10.details')
       },
       selfsigned: {
-        name: "HTTPS certificat auto-signé",
+        name: t('atsTab.connections.selfsigned.name'),
         status: "blocked",
         icon: "🚫",
         color: "red",
-        details: "Certificat non approuvé - ATS bloque"
+        details: t('atsTab.connections.selfsigned.details')
       }
     };
 
@@ -1363,28 +1339,26 @@ const IOSSecurityDemo = () => {
         <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
           <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
             <Shield className="w-5 h-5 text-blue-600" />
-            ATS - App Transport Security
+            {t('atsTab.title')}
           </h3>
           <p className="text-sm mb-3">
-            ATS force toutes les connexions réseau des apps à utiliser HTTPS avec des standards 
-            de sécurité élevés. Il protège contre les attaques man-in-the-middle et garantit 
-            que les données en transit sont chiffrées.
+            {t('atsTab.description')}
           </p>
           <div className="text-sm bg-alabaster border border-blue-200 rounded p-3">
-            <p className="font-semibold mb-2">Exigences ATS par défaut:</p>
+            <p className="font-semibold mb-2">{t('atsTab.defaultRequirements')}</p>
             <ul className="space-y-1 text-gray-700 text-xs">
-              <li>• HTTPS obligatoire (pas de HTTP)</li>
-              <li>• TLS 1.2 ou supérieur</li>
-              <li>• Certificats valides signés par une CA reconnue</li>
-              <li>• Forward secrecy (PFS) requis</li>
-              <li>• Suites de chiffrement fortes uniquement</li>
+              <li>• {t('atsTab.requirement1')}</li>
+              <li>• {t('atsTab.requirement2')}</li>
+              <li>• {t('atsTab.requirement3')}</li>
+              <li>• {t('atsTab.requirement4')}</li>
+              <li>• {t('atsTab.requirement5')}</li>
             </ul>
           </div>
         </div>
 
         {/* Sélection du type de connexion */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Types de Connexion</h4>
+          <h4 className="font-bold mb-4">{t('atsTab.connectionTypesTitle')}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {Object.entries(connections).map(([key, conn]) => (
               <button
@@ -1408,11 +1382,11 @@ const IOSSecurityDemo = () => {
 
         {/* Simulation de connexion */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Simulation de Connexion</h4>
+          <h4 className="font-bold mb-4">{t('atsTab.connectionSimulationTitle')}</h4>
           
           <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-300">
             <div className="text-sm mb-2">
-              <strong>App tente de se connecter à:</strong>
+              <strong>{t('atsTab.appTriesToConnect')}</strong>
             </div>
             <div className="font-mono text-sm bg-alabaster p-2 rounded border border-gray-300">
               {connectionType === 'https' || connectionType === 'tls10' || connectionType === 'selfsigned'
@@ -1425,7 +1399,7 @@ const IOSSecurityDemo = () => {
             onClick={attemptConnection}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all"
           >
-            Tenter la connexion
+            {t('atsTab.attemptConnection')}
           </button>
 
           {showAttempt && (
@@ -1433,10 +1407,10 @@ const IOSSecurityDemo = () => {
               <div className="p-4 bg-blue-50 border-2 border-blue-300 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <RefreshCw className="w-5 h-5 text-blue-600 animate-spin" />
-                  <span className="font-semibold">Étape 1: Analyse de la requête</span>
+                  <span className="font-semibold">{t('atsTab.analysisStep')}</span>
                 </div>
                 <div className="text-sm text-gray-700">
-                  ATS intercepte la requête et vérifie le protocole et les paramètres de sécurité
+                  {t('atsTab.analysisDesc')}
                 </div>
               </div>
 
@@ -1449,31 +1423,31 @@ const IOSSecurityDemo = () => {
                   {currentConnection.status === 'secure' && (
                     <>
                       <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="font-semibold text-green-800">Connexion Autorisée</span>
+                      <span className="font-semibold text-green-800">{t('atsTab.connectionAllowed')}</span>
                     </>
                   )}
                   {currentConnection.status === 'warning' && (
                     <>
                       <AlertTriangle className="w-5 h-5 text-orange-600" />
-                      <span className="font-semibold text-orange-800">Connexion Autorisée (Exception)</span>
+                      <span className="font-semibold text-orange-800">{t('atsTab.connectionAllowedException')}</span>
                     </>
                   )}
                   {currentConnection.status === 'blocked' && (
                     <>
                       <XCircle className="w-5 h-5 text-red-600" />
-                      <span className="font-semibold text-red-800">Connexion Bloquée</span>
+                      <span className="font-semibold text-red-800">{t('atsTab.connectionBlocked')}</span>
                     </>
                   )}
                 </div>
                 <div className="text-sm text-gray-700">
                   {currentConnection.status === 'secure' && (
-                    <>✅ Tous les critères ATS sont respectés. La connexion est établie de manière sécurisée avec chiffrement TLS fort.</>
+                    <>✅ {t('atsTab.secureConnectionDesc')}</>
                   )}
                   {currentConnection.status === 'warning' && (
-                    <>⚠️ Une exception ATS a été configurée pour ce domaine. La connexion est autorisée mais n'est pas recommandée pour des données sensibles.</>
+                    <>⚠️ {t('atsTab.warningConnectionDesc')}</>
                   )}
                   {currentConnection.status === 'blocked' && (
-                    <>🚫 ATS a bloqué cette connexion car elle ne respecte pas les standards de sécurité minimum. L'app reçoit une erreur NSURLErrorAppTransportSecurityRequiresSecureConnection.</>
+                    <>🚫 {t('atsTab.blockedConnectionDesc')}</>
                   )}
                 </div>
               </div>
@@ -1483,31 +1457,31 @@ const IOSSecurityDemo = () => {
 
         {/* Attaques protégées */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Protection contre Man-in-the-Middle</h4>
+          <h4 className="font-bold mb-4">{t('atsTab.mitmProtectionTitle')}</h4>
           <div className="space-y-4">
             <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
-              <div className="font-semibold mb-2 text-red-800">❌ Sans ATS (HTTP)</div>
+              <div className="font-semibold mb-2 text-red-800">❌ {t('atsTab.withoutATS')}</div>
               <div className="text-sm text-gray-700 mb-3">
-                Un attaquant sur le même WiFi peut intercepter et lire toutes les données
+                {t('atsTab.withoutATSDesc')}
               </div>
               <div className="flex items-center gap-2 text-xs">
                 <span className="bg-blue-100 px-2 py-1 rounded">📱 App</span>
                 <span>→</span>
-                <span className="bg-red-200 px-2 py-1 rounded font-semibold">🎭 Attaquant</span>
+                <span className="bg-red-200 px-2 py-1 rounded font-semibold">🎭 Attacker</span>
                 <span>→</span>
-                <span className="bg-gray-100 px-2 py-1 rounded">🖥️ Serveur</span>
+                <span className="bg-gray-100 px-2 py-1 rounded">🖥️ Server</span>
               </div>
             </div>
 
             <div className="p-4 bg-green-50 border-2 border-green-300 rounded-lg">
-              <div className="font-semibold mb-2 text-green-800">✅ Avec ATS (HTTPS + TLS 1.3)</div>
+              <div className="font-semibold mb-2 text-green-800">✅ {t('atsTab.withATS')}</div>
               <div className="text-sm text-gray-700 mb-3">
-                Toutes les données sont chiffrées bout-en-bout. L'attaquant ne voit que du trafic chiffré
+                {t('atsTab.withATSDesc')}
               </div>
               <div className="flex items-center gap-2 text-xs">
                 <span className="bg-blue-100 px-2 py-1 rounded">📱 App</span>
                 <span>→</span>
-                <span className="bg-gray-200 px-2 py-1 rounded">🎭 ??? (chiffré)</span>
+                <span className="bg-gray-200 px-2 py-1 rounded">🎭 ??? ({t('atsTab.encrypted')})</span>
                 <span>→</span>
                 <span className="bg-gray-100 px-2 py-1 rounded">🖥️ Serveur</span>
               </div>
@@ -1517,18 +1491,18 @@ const IOSSecurityDemo = () => {
 
         {/* Configuration ATS */}
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-3 text-sm">Configuration ATS (Info.plist):</h4>
+          <h4 className="font-semibold mb-3 text-sm">{t('atsTab.atsConfigTitle')}</h4>
           <div className="bg-gray-800 text-green-400 p-4 rounded font-mono text-xs overflow-x-auto">
             <div>{'<key>NSAppTransportSecurity</key>'}</div>
             <div>{'<dict>'}</div>
             <div className="ml-4">{'  <key>NSAllowsArbitraryLoads</key>'}</div>
-            <div className="ml-4">{'  <false/> <!-- ATS activé par défaut -->'}</div>
+            <div className="ml-4">{`  <false/> <!-- ${t('atsTab.atsEnabledByDefault')} -->`}</div>
             <div className="ml-4">{'  <key>NSExceptionDomains</key>'}</div>
             <div className="ml-4">{'  <dict>'}</div>
             <div className="ml-8">{'    <key>example.com</key>'}</div>
             <div className="ml-8">{'    <dict>'}</div>
             <div className="ml-12">{'      <key>NSExceptionAllowsInsecureHTTPLoads</key>'}</div>
-            <div className="ml-12">{'      <true/> <!-- Exception pour ce domaine -->'}</div>
+            <div className="ml-12">{`      <true/> <!-- ${t('atsTab.exceptionForDomain')} -->`}</div>
             <div className="ml-8">{'    </dict>'}</div>
             <div className="ml-4">{'  </dict>'}</div>
             <div>{'</dict>'}</div>
@@ -1536,12 +1510,8 @@ const IOSSecurityDemo = () => {
         </div>
 
         <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-2 text-sm">Complémentarité avec Data Protection:</h4>
-          <p className="text-sm text-gray-700">
-            <strong>Data Protection</strong> chiffre les données <em>au repos</em> (sur l'appareil), 
-            tandis qu'<strong>ATS</strong> protège les données <em>en transit</em> (sur le réseau). 
-            Ensemble, ils assurent une protection complète des données utilisateur.
-          </p>
+          <h4 className="font-semibold mb-2 text-sm">{t('atsTab.complementaryTitle')}</h4>
+          <p className="text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: t('atsTab.complementaryDesc') }} />
         </div>
       </div>
     );
@@ -1568,44 +1538,42 @@ const IOSSecurityDemo = () => {
         <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-6">
           <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
             <Shield className="w-5 h-5 text-purple-600" />
-            Secure Enclave - Coprocesseur de Sécurité
+            {t('secureEnclaveTab.title')}
           </h3>
           <p className="text-sm mb-3">
-            Le Secure Enclave est un coprocesseur sécurisé isolé du processeur principal. 
-            Il possède son propre système d'exploitation (sepOS) et gère toutes les opérations 
-            cryptographiques sensibles.
+            {t('secureEnclaveTab.description')}
           </p>
           <div className="text-sm bg-alabaster border border-purple-200 rounded p-3">
-            <p className="font-semibold mb-2">Responsabilités du Secure Enclave:</p>
+            <p className="font-semibold mb-2">{t('secureEnclaveTab.responsibilities')}</p>
             <ul className="space-y-1 text-gray-700">
-              <li>• Stockage et gestion des clés cryptographiques</li>
-              <li>• Traitement des données biométriques (Touch ID/Face ID)</li>
-              <li>• Génération de nombres aléatoires cryptographiques</li>
-              <li>• Protection contre les attaques physiques</li>
+              <li>• {t('secureEnclaveTab.responsibility1')}</li>
+              <li>• {t('secureEnclaveTab.responsibility2')}</li>
+              <li>• {t('secureEnclaveTab.responsibility3')}</li>
+              <li>• {t('secureEnclaveTab.responsibility4')}</li>
             </ul>
           </div>
         </div>
 
         {/* Architecture visuelle */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Architecture Isolée</h4>
+          <h4 className="font-bold mb-4">{t('secureEnclaveTab.architectureTitle')}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Processeur principal */}
             <div className="p-4 rounded-lg border-2 border-blue-300 bg-blue-50">
               <div className="font-semibold mb-3 flex items-center gap-2">
-                💻 Processeur Principal (Application Processor)
+                💻 {t('secureEnclaveTab.mainProcessor')}
               </div>
               <div className="space-y-2 text-sm">
                 <div className="p-2 bg-alabaster rounded border border-blue-200">
-                  <div className="font-semibold text-xs mb-1">iOS / Applications</div>
-                  <div className="text-xs text-gray-600">Exécution des apps, UI, etc.</div>
+                  <div className="font-semibold text-xs mb-1">{t('secureEnclaveTab.iosApps')}</div>
+                  <div className="text-xs text-gray-600">{t('secureEnclaveTab.iosAppsDesc')}</div>
                 </div>
                 <div className="p-2 bg-alabaster rounded border border-blue-200">
-                  <div className="font-semibold text-xs mb-1">Kernel (XNU)</div>
-                  <div className="text-xs text-gray-600">Gestion système</div>
+                  <div className="font-semibold text-xs mb-1">{t('secureEnclaveTab.kernel')}</div>
+                  <div className="text-xs text-gray-600">{t('secureEnclaveTab.kernelDesc')}</div>
                 </div>
                 <div className="text-xs text-center text-gray-500 py-1">
-                  ⬇️ Communication sécurisée ⬇️
+                  ⬇️ {t('secureEnclaveTab.secureCommunication')} ⬇️
                 </div>
               </div>
             </div>
@@ -1616,20 +1584,20 @@ const IOSSecurityDemo = () => {
                 <Lock className="w-5 h-5 text-purple-600" />
               </div>
               <div className="font-semibold mb-3 flex items-center gap-2">
-                🔒 Secure Enclave (Isolé)
+                🔒 {t('secureEnclaveTab.secureEnclaveIsolated')}
               </div>
               <div className="space-y-2 text-sm">
                 <div className="p-2 bg-alabaster rounded border-2 border-purple-300">
-                  <div className="font-semibold text-xs mb-1">sepOS</div>
-                  <div className="text-xs text-gray-600">OS dédié et isolé</div>
+                  <div className="font-semibold text-xs mb-1">{t('secureEnclaveTab.sepOS')}</div>
+                  <div className="text-xs text-gray-600">{t('secureEnclaveTab.sepOSDesc')}</div>
                 </div>
                 <div className="p-2 bg-purple-100 rounded border-2 border-purple-300">
-                  <div className="font-semibold text-xs mb-1">🔑 Clés Cryptographiques</div>
-                  <div className="text-xs text-gray-600">Ne quittent jamais l'enclave</div>
+                  <div className="font-semibold text-xs mb-1">🔑 {t('secureEnclaveTab.cryptoKeys')}</div>
+                  <div className="text-xs text-gray-600">{t('secureEnclaveTab.cryptoKeysDesc')}</div>
                 </div>
                 <div className="p-2 bg-purple-100 rounded border-2 border-purple-300">
-                  <div className="font-semibold text-xs mb-1">👤 Données Biométriques</div>
-                  <div className="text-xs text-gray-600">Stockage sécurisé</div>
+                  <div className="font-semibold text-xs mb-1">👤 {t('secureEnclaveTab.biometricData')}</div>
+                  <div className="text-xs text-gray-600">{t('secureEnclaveTab.biometricDataDesc')}</div>
                 </div>
               </div>
             </div>
@@ -1638,7 +1606,7 @@ const IOSSecurityDemo = () => {
 
         {/* Simulation biométrique */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Simulation: Authentification Face ID</h4>
+          <h4 className="font-bold mb-4">{t('secureEnclaveTab.faceIdSimulation')}</h4>
           
           <div className="space-y-4">
             <div className="flex gap-4">
@@ -1648,8 +1616,8 @@ const IOSSecurityDemo = () => {
                 className="flex-1 p-4 bg-green-100 hover:bg-green-200 border-2 border-green-300 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="text-3xl mb-2">✅</div>
-                <div className="font-semibold">Visage Autorisé</div>
-                <div className="text-xs text-gray-600">Propriétaire de l'appareil</div>
+                <div className="font-semibold">{t('secureEnclaveTab.authorizedFace')}</div>
+                <div className="text-xs text-gray-600">{t('secureEnclaveTab.authorizedFaceDesc')}</div>
               </button>
 
               <button
@@ -1658,8 +1626,8 @@ const IOSSecurityDemo = () => {
                 className="flex-1 p-4 bg-red-100 hover:bg-red-200 border-2 border-red-300 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="text-3xl mb-2">❌</div>
-                <div className="font-semibold">Visage Non Autorisé</div>
-                <div className="text-xs text-gray-600">Personne inconnue</div>
+                <div className="font-semibold">{t('secureEnclaveTab.unauthorizedFace')}</div>
+                <div className="text-xs text-gray-600">{t('secureEnclaveTab.unauthorizedFaceDesc')}</div>
               </button>
             </div>
 
@@ -1675,18 +1643,18 @@ const IOSSecurityDemo = () => {
                     {operation === 'processing' && (
                       <>
                         <RefreshCw className="w-5 h-5 text-blue-600 animate-spin" />
-                        <span className="font-semibold">Étape 1: Capture Face ID</span>
+                        <span className="font-semibold">{t('secureEnclaveTab.step1Title')}</span>
                       </>
                     )}
                     {operation !== 'processing' && (
                       <>
                         <CheckCircle className="w-5 h-5 text-gray-600" />
-                        <span className="font-semibold">Étape 1: Capture Face ID</span>
+                        <span className="font-semibold">{t('secureEnclaveTab.step1Title')}</span>
                       </>
                     )}
                   </div>
                   <div className="text-sm text-gray-700">
-                    La caméra TrueDepth capture et crée une carte 3D du visage
+                    {t('secureEnclaveTab.step1Desc')}
                   </div>
                 </div>
 
@@ -1700,19 +1668,18 @@ const IOSSecurityDemo = () => {
                       {operation === 'processing' && (
                         <>
                           <Lock className="w-5 h-5 text-purple-600 animate-pulse" />
-                          <span className="font-semibold">Étape 2: Traitement dans Secure Enclave</span>
+                          <span className="font-semibold">{t('secureEnclaveTab.step2Title')}</span>
                         </>
                       )}
                       {operation !== 'processing' && (
                         <>
                           <CheckCircle className="w-5 h-5 text-gray-600" />
-                          <span className="font-semibold">Étape 2: Traitement dans Secure Enclave</span>
+                          <span className="font-semibold">{t('secureEnclaveTab.step2Title')}</span>
                         </>
                       )}
                     </div>
                     <div className="text-sm text-gray-700">
-                      Les données sont envoyées au Secure Enclave pour comparaison. 
-                      Les données biométriques ne quittent JAMAIS le Secure Enclave.
+                      {t('secureEnclaveTab.step2Desc')}
                     </div>
                   </div>
                 )}
@@ -1736,8 +1703,8 @@ const IOSSecurityDemo = () => {
                     </div>
                     <div className="text-sm text-gray-700">
                       {operation === 'success' 
-                        ? '✅ Le Secure Enclave confirme la correspondance. L\'appareil est déverrouillé et les clés de chiffrement sont libérées.'
-                        : '🚫 Pas de correspondance détectée. L\'accès est refusé. Après 5 échecs, un code est requis.'}
+                        ? `✅ ${t('secureEnclaveTab.authSuccessDesc')}`
+                        : `🚫 ${t('secureEnclaveTab.authFailedDesc')}`}
                     </div>
                   </div>
                 )}
@@ -1748,34 +1715,30 @@ const IOSSecurityDemo = () => {
 
         {/* Avantages de sécurité */}
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-3 text-sm">Protection du Secure Enclave:</h4>
+          <h4 className="font-semibold mb-3 text-sm">{t('secureEnclaveTab.protectionsTitle')}</h4>
           <div className="space-y-2 text-sm text-gray-700">
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Isolation matérielle:</strong> Complètement séparé du processeur principal</span>
+              <span dangerouslySetInnerHTML={{ __html: t('secureEnclaveTab.protection1') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Clés non extractibles:</strong> Les clés crypto ne peuvent jamais être lues par iOS</span>
+              <span dangerouslySetInnerHTML={{ __html: t('secureEnclaveTab.protection2') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Protection anti-rejeu:</strong> Compteur de tentatives qui ne peut pas être réinitialisé</span>
+              <span dangerouslySetInnerHTML={{ __html: t('secureEnclaveTab.protection3') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Boot sécurisé:</strong> Le Secure Enclave a sa propre chaîne de démarrage vérifiée</span>
+              <span dangerouslySetInnerHTML={{ __html: t('secureEnclaveTab.protection4') }} />
             </div>
           </div>
         </div>
 
         <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-2 text-sm">Pourquoi c'est crucial:</h4>
-          <p className="text-sm text-gray-700">
-            Même si un attaquant compromet complètement iOS et obtient un accès root, 
-            il ne peut pas extraire vos clés cryptographiques ou données biométriques du Secure Enclave. 
-            C'est une <strong>forteresse matérielle</strong> indépendante.
-          </p>
+          <h4 className="font-semibold mb-2 text-sm">{t('secureEnclaveTab.whyCrucialTitle')}</h4>
+          <p className="text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: t('secureEnclaveTab.whyCrucialDesc') }} />
         </div>
       </div>
     );
@@ -1787,28 +1750,28 @@ const IOSSecurityDemo = () => {
 
     const files = {
       complete: {
-        name: "Messages.db",
+        name: t('dataProtectionTab.files.complete.name'),
         protection: "Complete",
         icon: "💬",
-        desc: "Protection complète - Accessible uniquement déverrouillé"
+        desc: t('dataProtectionTab.files.complete.desc')
       },
       unlessOpen: {
-        name: "Document.pdf",
+        name: t('dataProtectionTab.files.unlessOpen.name'),
         protection: "CompleteUnlessOpen",
         icon: "📄",
-        desc: "Protégé sauf si ouvert - Reste accessible après ouverture"
+        desc: t('dataProtectionTab.files.unlessOpen.desc')
       },
       firstUnlock: {
-        name: "Email.db",
+        name: t('dataProtectionTab.files.firstUnlock.name'),
         protection: "CompleteUntilFirstUserAuth",
         icon: "📧",
-        desc: "Accessible après 1er déverrouillage depuis boot"
+        desc: t('dataProtectionTab.files.firstUnlock.desc')
       },
       none: {
-        name: "Cache.tmp",
+        name: t('dataProtectionTab.files.none.name'),
         protection: "None",
         icon: "📦",
-        desc: "Pas de protection - Toujours accessible"
+        desc: t('dataProtectionTab.files.none.desc')
       }
     };
 
@@ -1825,26 +1788,24 @@ const IOSSecurityDemo = () => {
         <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
           <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
             <Lock className="w-5 h-5 text-blue-600" />
-            Data Protection - Chiffrement des Données
+            {t('dataProtectionTab.title')}
           </h3>
           <p className="text-sm mb-3">
-            iOS chiffre chaque fichier avec sa propre clé unique. Les clés sont protégées par 
-            le code de l'utilisateur et gérées par le Secure Enclave. Différentes classes de 
-            protection déterminent quand les fichiers sont accessibles.
+            {t('dataProtectionTab.description')}
           </p>
           <div className="text-sm bg-alabaster border border-blue-200 rounded p-3">
-            <p className="font-semibold mb-2">Architecture de chiffrement:</p>
+            <p className="font-semibold mb-2">{t('dataProtectionTab.encryptionArchitecture')}</p>
             <div className="space-y-1 text-gray-700 text-xs">
-              <div>1. <strong>Clé matérielle</strong> (unique par appareil, gravée dans silicon)</div>
-              <div>2. <strong>Clé de classe</strong> (protégée par le code utilisateur)</div>
-              <div>3. <strong>Clé de fichier</strong> (unique par fichier, AES-256)</div>
+              <div dangerouslySetInnerHTML={{ __html: `1. ${t('dataProtectionTab.hardwareKey')}` }} />
+              <div dangerouslySetInnerHTML={{ __html: `2. ${t('dataProtectionTab.classKey')}` }} />
+              <div dangerouslySetInnerHTML={{ __html: `3. ${t('dataProtectionTab.fileKey')}` }} />
             </div>
           </div>
         </div>
 
         {/* Contrôle état appareil */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">État de l'appareil</h4>
+          <h4 className="font-bold mb-4">{t('dataProtectionTab.deviceStateTitle')}</h4>
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => setDeviceState('boot')}
@@ -1855,8 +1816,8 @@ const IOSSecurityDemo = () => {
               }`}
             >
               <div className="text-2xl mb-1">🔴</div>
-              <div className="font-semibold text-sm">Après Boot</div>
-              <div className="text-xs text-gray-600">Jamais déverrouillé</div>
+              <div className="font-semibold text-sm">{t('dataProtectionTab.afterBoot')}</div>
+              <div className="text-xs text-gray-600">{t('dataProtectionTab.afterBootDesc')}</div>
             </button>
 
             <button
@@ -1868,8 +1829,8 @@ const IOSSecurityDemo = () => {
               }`}
             >
               <div className="text-2xl mb-1">🔒</div>
-              <div className="font-semibold text-sm">Verrouillé</div>
-              <div className="text-xs text-gray-600">Déjà déverrouillé 1×</div>
+              <div className="font-semibold text-sm">{t('dataProtectionTab.locked')}</div>
+              <div className="text-xs text-gray-600">{t('dataProtectionTab.lockedDesc')}</div>
             </button>
 
             <button
@@ -1881,8 +1842,8 @@ const IOSSecurityDemo = () => {
               }`}
             >
               <div className="text-2xl mb-1">🔓</div>
-              <div className="font-semibold text-sm">Déverrouillé</div>
-              <div className="text-xs text-gray-600">Accès complet</div>
+              <div className="font-semibold text-sm">{t('dataProtectionTab.unlocked')}</div>
+              <div className="text-xs text-gray-600">{t('dataProtectionTab.unlockedDesc')}</div>
             </button>
 
             <button
@@ -1894,15 +1855,15 @@ const IOSSecurityDemo = () => {
               }`}
             >
               <div className="text-2xl mb-1">🔐</div>
-              <div className="font-semibold text-sm">Verrouillé + Fichier Ouvert</div>
-              <div className="text-xs text-gray-600">Protection Unless Open</div>
+              <div className="font-semibold text-sm">{t('dataProtectionTab.lockedButOpen')}</div>
+              <div className="text-xs text-gray-600">{t('dataProtectionTab.lockedButOpenDesc')}</div>
             </button>
           </div>
         </div>
 
         {/* Classes de protection */}
         <div className="bg-alabaster border-2 border-gray-300 rounded-lg p-6">
-          <h4 className="font-bold mb-4">Classes de Protection des Fichiers</h4>
+          <h4 className="font-bold mb-4">{t('dataProtectionTab.filesTitle')}</h4>
           <div className="space-y-3">
             {Object.entries(files).map(([key, file]) => {
               const accessible = canAccessFile(file.protection);
@@ -1937,9 +1898,9 @@ const IOSSecurityDemo = () => {
                   </div>
                   <div className="text-xs">
                     {accessible ? (
-                      <span className="text-green-700">✅ Accessible dans l'état actuel</span>
+                      <span className="text-green-700">✅ {t('dataProtectionTab.accessible')}</span>
                     ) : (
-                      <span className="text-red-700">🔒 Chiffré - Clé non disponible</span>
+                      <span className="text-red-700">🔒 {t('dataProtectionTab.notAccessible')}</span>
                     )}
                   </div>
                 </div>
@@ -1950,46 +1911,45 @@ const IOSSecurityDemo = () => {
 
         {/* Schéma de chiffrement */}
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-3 text-sm">Comment fonctionne le chiffrement:</h4>
+          <h4 className="font-semibold mb-3 text-sm">{t('dataProtectionTab.keyDerivationTitle')}</h4>
           <div className="space-y-3 text-sm">
             <div className="p-3 bg-alabaster rounded border border-gray-300">
-              <div className="font-semibold mb-1">1. Clé Matérielle (UID)</div>
+              <div className="font-semibold mb-1">1. {t('dataProtectionTab.hardwareKeyUID')}</div>
               <div className="text-xs text-gray-600">
-                Unique par appareil, gravée dans le silicon lors de la fabrication. 
-                Impossible à extraire.
+                {t('dataProtectionTab.hardwareKeyUIDDesc')}
               </div>
             </div>
             <div className="text-center text-gray-400">+</div>
             <div className="p-3 bg-alabaster rounded border border-gray-300">
-              <div className="font-semibold mb-1">2. Code Utilisateur</div>
+              <div className="font-semibold mb-1">2. {t('dataProtectionTab.userCode')}</div>
               <div className="text-xs text-gray-600">
-                Dérivé du code/Face ID de l'utilisateur via le Secure Enclave.
+                {t('dataProtectionTab.userCodeDesc')}
               </div>
             </div>
             <div className="text-center text-gray-400">=</div>
             <div className="p-3 bg-green-50 rounded border-2 border-green-300">
-              <div className="font-semibold mb-1">3. Clé de Classe Dérivée</div>
+              <div className="font-semibold mb-1">3. {t('dataProtectionTab.derivedClassKey')}</div>
               <div className="text-xs text-gray-600">
-                Utilisée pour déchiffrer les clés de fichiers individuels (AES-256).
+                {t('dataProtectionTab.derivedClassKeyDesc')}
               </div>
             </div>
           </div>
         </div>
 
         <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-2 text-sm">Protection contre les attaques:</h4>
+          <h4 className="font-semibold mb-2 text-sm">{t('dataProtectionTab.attackProtectionTitle')}</h4>
           <div className="space-y-2 text-sm text-gray-700">
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Vol de l'appareil:</strong> Sans le code, impossible de déchiffrer</span>
+              <span dangerouslySetInnerHTML={{ __html: t('dataProtectionTab.attackProtection1') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Extraction de données:</strong> Les fichiers restent chiffrés hors appareil</span>
+              <span dangerouslySetInnerHTML={{ __html: t('dataProtectionTab.attackProtection2') }} />
             </div>
             <div className="flex items-start gap-2">
               <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
-              <span><strong>Attaque brute force:</strong> Secure Enclave impose des délais croissants</span>
+              <span dangerouslySetInnerHTML={{ __html: t('dataProtectionTab.attackProtection3') }} />
             </div>
           </div>
         </div>
@@ -2002,10 +1962,10 @@ const IOSSecurityDemo = () => {
     const [accessAttempt, setAccessAttempt] = useState(null);
 
     const apps = {
-      malicious: { name: "App Malveillante", color: "red", icon: "⚠️" },
-      photos: { name: "Photos", color: "blue", icon: "📷" },
-      contacts: { name: "Contacts", color: "green", icon: "👥" },
-      files: { name: "Fichiers", color: "purple", icon: "📁" }
+      malicious: { name: t('sandboxTab.maliciousApp'), color: "red", icon: "⚠️" },
+      photos: { name: t('sandboxTab.photos'), color: "blue", icon: "📷" },
+      contacts: { name: t('sandboxTab.contacts'), color: "green", icon: "👥" },
+      files: { name: t('sandboxTab.files'), color: "purple", icon: "📁" }
     };
 
     const attemptAccess = (target) => {
@@ -2018,12 +1978,10 @@ const IOSSecurityDemo = () => {
         <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6">
           <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
             <Lock className="w-5 h-5 text-green-600" />
-            Sandbox - Isolation des applications
+            {t('sandboxTab.title')}
           </h3>
           <p className="text-sm text-gray-700">
-            Chaque app iOS fonctionne dans son propre "bac à sable" (sandbox) isolé. 
-            Elle ne peut accéder qu'à ses propres données et doit demander la permission 
-            pour accéder aux ressources système.
+            {t('sandboxTab.description')}
           </p>
         </div>
 
@@ -2050,29 +2008,29 @@ const IOSSecurityDemo = () => {
         {selectedApp === 'malicious' && (
           <div className="bg-alabaster border-2 border-red-300 rounded-lg p-6">
             <h4 className="font-bold mb-4 text-red-700">
-              Tentatives d'accès depuis l'app malveillante
+              {t('sandboxTab.accessAttemptsTitle')}
             </h4>
             <div className="space-y-3">
               <button
                 onClick={() => attemptAccess('photos')}
                 className="w-full p-3 bg-red-100 hover:bg-red-200 border-2 border-red-300 rounded-lg text-left transition-all"
               >
-                <div className="font-semibold">Accéder aux Photos</div>
-                <div className="text-xs text-gray-600">Lecture /var/mobile/Media/DCIM/</div>
+                <div className="font-semibold">{t('sandboxTab.accessPhotos')}</div>
+                <div className="text-xs text-gray-600">{t('sandboxTab.accessPhotosPath')}</div>
               </button>
               <button
                 onClick={() => attemptAccess('contacts')}
                 className="w-full p-3 bg-red-100 hover:bg-red-200 border-2 border-red-300 rounded-lg text-left transition-all"
               >
-                <div className="font-semibold">Accéder aux Contacts</div>
-                <div className="text-xs text-gray-600">Lecture AddressBook.sqlitedb</div>
+                <div className="font-semibold">{t('sandboxTab.accessContacts')}</div>
+                <div className="text-xs text-gray-600">{t('sandboxTab.accessContactsPath')}</div>
               </button>
               <button
                 onClick={() => attemptAccess('system')}
                 className="w-full p-3 bg-red-100 hover:bg-red-200 border-2 border-red-300 rounded-lg text-left transition-all"
               >
-                <div className="font-semibold">Modifier fichiers système</div>
-                <div className="text-xs text-gray-600">Écriture /System/Library/</div>
+                <div className="font-semibold">{t('sandboxTab.modifySystemFiles')}</div>
+                <div className="text-xs text-gray-600">{t('sandboxTab.modifySystemFilesPath')}</div>
               </button>
             </div>
           </div>
@@ -2083,10 +2041,10 @@ const IOSSecurityDemo = () => {
             <div className="flex items-start gap-3">
               <XCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-1" />
               <div>
-                <div className="font-bold text-red-800 mb-1">Accès refusé par le Sandbox !</div>
+                <div className="font-bold text-red-800 mb-1">{t('sandboxTab.accessDeniedTitle')}</div>
                 <div className="text-sm text-gray-700">
-                  L'app malveillante n'a pas la permission d'accéder à {accessAttempt === 'photos' ? 'vos photos' : accessAttempt === 'contacts' ? 'vos contacts' : 'ces fichiers système'}.
-                  Le sandbox bloque toute tentative d'accès non autorisé.
+                  {accessAttempt === 'photos' ? t('sandboxTab.accessDeniedPhotos') : accessAttempt === 'contacts' ? t('sandboxTab.accessDeniedContacts') : t('sandboxTab.accessDeniedSystem')}
+                  {' '}{t('sandboxTab.accessDeniedDesc')}
                 </div>
               </div>
             </div>
@@ -2094,13 +2052,13 @@ const IOSSecurityDemo = () => {
         )}
 
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-2 text-sm">Restrictions du Sandbox :</h4>
+          <h4 className="font-semibold mb-2 text-sm">{t('sandboxTab.restrictionsTitle')}</h4>
           <ul className="space-y-2 text-sm text-gray-700">
-            <li>• Chaque app a son propre répertoire isolé</li>
-            <li>• Accès aux autres apps : <strong>Interdit</strong></li>
-            <li>• Accès aux fichiers système : <strong>Lecture seule ou interdit</strong></li>
-            <li>• Ressources (caméra, micro, GPS) : <strong>Permission requise</strong></li>
-            <li>• Communication inter-apps : <strong>Via APIs contrôlées uniquement</strong></li>
+            <li>• {t('sandboxTab.restriction1')}</li>
+            <li dangerouslySetInnerHTML={{ __html: `• ${t('sandboxTab.restriction2')}` }} />
+            <li dangerouslySetInnerHTML={{ __html: `• ${t('sandboxTab.restriction3')}` }} />
+            <li dangerouslySetInnerHTML={{ __html: `• ${t('sandboxTab.restriction4')}` }} />
+            <li dangerouslySetInnerHTML={{ __html: `• ${t('sandboxTab.restriction5')}` }} />
           </ul>
         </div>
       </div>
@@ -2126,10 +2084,10 @@ const IOSSecurityDemo = () => {
     const [attackStep, setAttackStep] = useState(0);
     
     const steps = [
-      { title: "Situation normale", desc: "Le programme s'exécute normalement avec code et données séparés" },
-      { title: "Tentative d'injection", desc: "Un attaquant tente d'injecter du code malveillant dans la pile (zone de données)" },
-      { title: "XN Bit intervient", desc: "Le processeur détecte une tentative d'exécution dans une zone marquée non-exécutable" },
-      { title: "Attaque bloquée", desc: "Le système termine immédiatement le processus (crash) - l'attaque échoue" }
+      { title: t('xnBitTab.steps.step1.title'), desc: t('xnBitTab.steps.step1.desc') },
+      { title: t('xnBitTab.steps.step2.title'), desc: t('xnBitTab.steps.step2.desc') },
+      { title: t('xnBitTab.steps.step3.title'), desc: t('xnBitTab.steps.step3.desc') },
+      { title: t('xnBitTab.steps.step4.title'), desc: t('xnBitTab.steps.step4.desc') }
     ];
 
     return (
@@ -2137,11 +2095,10 @@ const IOSSecurityDemo = () => {
         <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
           <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
             <Shield className="w-5 h-5 text-blue-600" />
-            Comment fonctionne le XN Bit
+            {t('xnBitTab.title')}
           </h3>
           <p className="text-sm mb-4">
-            Le XN (eXecute Never) bit marque certaines zones mémoire comme NON-EXÉCUTABLES. 
-            Même si un attaquant injecte du code malveillant, le processeur refuse de l'exécuter.
+            {t('xnBitTab.description')}
           </p>
         </div>
 
@@ -2157,7 +2114,7 @@ const IOSSecurityDemo = () => {
                     : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
                 }`}
               >
-                Étape {idx + 1}
+                {t('xnBitTab.step')} {idx + 1}
               </button>
             ))}
           </div>
@@ -2173,7 +2130,7 @@ const IOSSecurityDemo = () => {
                 'border-blue-300 bg-blue-50'
               }`}>
                 <div className="font-semibold mb-2 flex items-center gap-2">
-                  Zone Code (Exécutable)
+                  {t('xnBitTab.codeZone')}
                   {attackStep === 0 && <CheckCircle className="w-4 h-4 text-green-600" />}
                 </div>
                 <div className="text-xs font-mono space-y-1">
@@ -2190,7 +2147,7 @@ const IOSSecurityDemo = () => {
                 'border-red-500 bg-red-100'
               }`}>
                 <div className="font-semibold mb-2 flex items-center gap-2">
-                  Zone Données (Stack) - XN activé
+                  {t('xnBitTab.dataZone')}
                   {attackStep >= 2 && <XCircle className="w-4 h-4 text-red-600" />}
                 </div>
                 <div className="text-xs font-mono space-y-1">
@@ -2209,8 +2166,7 @@ const IOSSecurityDemo = () => {
               <div className="mt-4 p-3 bg-yellow-50 border-2 border-yellow-300 rounded flex items-start gap-2">
                 <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
-                  <strong>Détection:</strong> Le CPU détecte une tentative d'exécution à l'adresse 0x7FF010 
-                  qui est marquée avec le bit XN (non-exécutable)
+                  <strong>{t('xnBitTab.detection')}</strong> {t('xnBitTab.detectionDesc')}
                 </div>
               </div>
             )}
@@ -2219,8 +2175,7 @@ const IOSSecurityDemo = () => {
               <div className="mt-4 p-3 bg-red-50 border-2 border-red-300 rounded flex items-start gap-2">
                 <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
-                  <strong>Protection activée:</strong> Le système termine le processus immédiatement. 
-                  L'attaquant ne peut pas exécuter son code malveillant. L'application crash plutôt que d'être compromise.
+                  <strong>{t('xnBitTab.protectionActivated')}</strong> {t('xnBitTab.protectionActivatedDesc')}
                 </div>
               </div>
             )}
@@ -2228,23 +2183,23 @@ const IOSSecurityDemo = () => {
         </div>
 
         <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold mb-2 text-sm">Zones mémoire typiques avec XN:</h4>
+          <h4 className="font-semibold mb-2 text-sm">{t('xnBitTab.memoryZonesTitle')}</h4>
           <div className="space-y-2 text-sm">
             <div className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-green-600" />
-              <span><strong>Code:</strong> Exécutable, non modifiable</span>
+              <span dangerouslySetInnerHTML={{ __html: t('xnBitTab.codeExecutable') }} />
             </div>
             <div className="flex items-center gap-2">
               <XCircle className="w-4 h-4 text-red-600" />
-              <span><strong>Stack:</strong> Non exécutable (XN activé)</span>
+              <span dangerouslySetInnerHTML={{ __html: t('xnBitTab.stackNonExecutable') }} />
             </div>
             <div className="flex items-center gap-2">
               <XCircle className="w-4 h-4 text-red-600" />
-              <span><strong>Heap:</strong> Non exécutable (XN activé)</span>
+              <span dangerouslySetInnerHTML={{ __html: t('xnBitTab.heapNonExecutable') }} />
             </div>
             <div className="flex items-center gap-2">
               <XCircle className="w-4 h-4 text-red-600" />
-              <span><strong>Données:</strong> Non exécutable (XN activé)</span>
+              <span dangerouslySetInnerHTML={{ __html: t('xnBitTab.dataNonExecutable') }} />
             </div>
           </div>
         </div>
